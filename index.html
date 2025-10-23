@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Informační tabule — ZŠ Březové Hory</title>
+  <meta name="description" content="Informační tabule školy — oběd, počasí, plán akcí, aktuality." />
+  <style>
+    :root {
+      --bg: #0f1724;
+      --card: #101a2c;
+      --accent: #f6c84c;
+      --muted: #a3b0be;
+      --radius: 14px;
+      --gap: 18px;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html,body { height: 100%; margin: 0; font-family: 'Inter',system-ui,Segoe UI,Roboto; background: #071226; color: #e6eef6; }
+    .wrap { max-width: 1200px; margin: 20px auto; padding: 20px; display: grid; gap: var(--gap); grid-template-columns: 2fr 1fr; }
+    header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+    h1 { font-size: 22px; margin: 0; }
+    .card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .card h2 { margin-top: 0; font-size: 16px; color: var(--accent); }
+    #clock { font-size: 28px; font-weight: bold; }
+    #date { font-size: 14px; color: var(--muted); }
+    .weather-icon { font-size: 40px; }
+    .forecast { display: flex; gap: 8px; flex-wrap: wrap; }
+    .forecast div { background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 8px; font-size: 13px; }
+    footer { grid-column: 1 / -1; text-align: center; font-size: 12px; color: var(--muted); margin-top: 20px; }
+    @media(max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Informační tabule — ZŠ Březové Hory</h1>
+    <div id="updated" style="font-size:13px;color:var(--muted)">Aktualizace: —</div>
+  </header>
+
+  <div class="card" id="lunch">
+    <h2>🍽️ Dnešní oběd</h2>
+    <div id="lunch-content">Načítám jídelníček...</div>
+  </div>
+
+  <div class="card">
+    <h2>🕒 Čas a datum</h2>
+    <div id="clock"></div>
+    <div id="date"></div>
+  </div>
+
+  <div class="card">
+    <h2>🌤️ Počasí</h2>
+    <div id="weather">Načítám počasí...</div>
+    <div class="forecast" id="forecast"></div>
+  </div>
+
+  <div class="card">
+    <h2>📅 Plán akcí</h2>
+    <ul id="events">
+      <li>30. 10. — Halloween ve škole 🎃</li>
+      <li>11. 11. — Den otevřených dveří</li>
+      <li>20. 12. — Vánoční koncert</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>📰 Aktuality ze školy</h2>
+    <ul id="news">
+      <li>Školní soutěž v programování — výsledky zveřejněny!</li>
+      <li>Nové lavice ve třídách 7.A a 7.B</li>
+    </ul>
+  </div>
+
+  <footer>© 2025 ZŠ Březové Hory • Automaticky aktualizováno každých 15 minut</footer>
+</div>
+
+<script>
+// === HODINY ===
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  document.getElementById('date').textContent = now.toLocaleDateString('cs-CZ', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// === POČASÍ ===
+async function loadWeather() {
+  try {
+    // souřadnice Příbram (pro ZŠ Březové Hory)
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=49.690&longitude=14.010&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&forecast_days=3&timezone=Europe%2FPrague');
+    const data = await res.json();
+    const cur = data.current_weather;
+    document.getElementById('weather').innerHTML = `${cur.temperature} °C, ${cur.weathercode < 3 ? 'jasno' : 'oblačno'}, vítr ${cur.windspeed} km/h`;
+
+    const days = data.daily.time.map((t,i)=>({
+      date: new Date(t),
+      max: data.daily.temperature_2m_max[i],
+      min: data.daily.temperature_2m_min[i]
+    }));
+    const forecast = document.getElementById('forecast');
+    forecast.innerHTML = '';
+    days.forEach(d=>{
+      forecast.innerHTML += `<div>${d.date.toLocaleDateString('cs-CZ',{weekday:'short'})}<br>${d.min}–${d.max}°C</div>`;
+    });
+  } catch(e) {
+    document.getElementById('weather').textContent = 'Nelze načíst počasí.';
+    console.error(e);
+  }
+}
+
+// === JÍDELNÍČEK ===
+async function loadLunch() {
+  const target = 'https://zsbrezovehory.cz/jidelni-listek/';
+  try {
+    const html = await fetch(target).then(r=>r.text());
+    // zkusíme vybrat jen část textu (např. jídelníček na aktuální den)
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    // hledej blok s jídelníčkem
+    const article = div.querySelector('article, .post-content, .entry-content, .elementor-widget-container');
+    let text = article ? article.innerText : div.innerText;
+    // zkrátit a očistit
+    text = text.replace(/\\s{3,}/g, '\\n').trim();
+    const firstLines = text.split('\\n').slice(0, 8).join('<br>');
+    document.getElementById('lunch-content').innerHTML = firstLines || 'Nelze načíst jídelníček.';
+  } catch(e) {
+    document.getElementById('lunch-content').textContent = 'Nepodařilo se načíst jídelníček.';
+    console.error(e);
+  }
+}
+
+// === AUTOMATICKÁ AKTUALIZACE ===
+async function refreshAll() {
+  await Promise.all([loadWeather(), loadLunch()]);
+  document.getElementById('updated').textContent = 'Aktualizováno: ' + new Date().toLocaleTimeString('cs-CZ');
+}
+refreshAll();
+setInterval(refreshAll, 15 * 60 * 1000); // každých 15 min
+
+</script>
+</body>
+</html>
