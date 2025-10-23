@@ -45,7 +45,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 .news{display:flex;gap:12px;align-items:flex-start}
 .news .thumb{width:140px;height:100px;border-radius:10px;background:#072a2d;background-size:cover;background-position:center;flex-shrink:0}
 .news .txt{flex:1;text-align:left;font-size:14px;color:#e6eef4}
-.departures{display:flex;flex-direction:column;gap:6px;font-family:'Roboto Condensed',sans-serif}
+.departures{display:flex;flex-direction:column;gap:6px;font-family:'Roboto Condensed',sans-serif;max-height:220px;overflow-y:auto;}
 .dep-row{display:flex;justify-content:space-between;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);font-size:14px}
 .dep-time{font-weight:700;color:#ffd9b8}
 .ticker{grid-column:1/-1;height:38px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;overflow:hidden;padding:6px 12px;border:1px solid rgba(255,255,255,0.03);}
@@ -72,27 +72,29 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </div>
 <div class="meta">Napájení: online • Režim: veřejná tabule</div>
 </div>
+
 <div class="left-top">
 <div class="card">
 <div class="card-header">
 <div class="icon"><i class="fa-regular fa-clock"></i></div>
 <div><h3>Čas & Datum</h3><div class="meta">Přesnost: systémová</div></div>
 </div>
-<div class="clock-box" style="margin-top:8px;align-items:flex-start">
+<div class="clock-box">
 <div id="clock-time">--:--:--</div>
 <div id="clock-date">—</div>
-<div id="small-weather" style="margin-top:8px" class="weather-compact"><div class="w-icon">⛅</div><div class="w-main">Načítám počasí...</div></div>
+<div id="small-weather" class="weather-compact"><div class="w-icon">⛅</div><div class="w-main">Načítám počasí...</div></div>
 </div>
 </div>
+
 <div class="card">
 <div class="card-header">
 <div class="icon"><i class="fa-solid fa-bus"></i></div>
 <div><h3>Odjezdy</h3><div class="meta">Autobusy & vlaky</div></div>
 </div>
-<div class="departures" id="departures">
+<div class="departures" id="departures"></div>
 </div>
 </div>
-</div>
+
 <div class="left-bottom">
 <div class="card" style="min-height:260px">
 <div class="card-header">
@@ -101,6 +103,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </div>
 <div id="obed"><em>Načítám jídelníček...</em></div>
 </div>
+
 <div class="card">
 <div class="card-header">
 <div class="icon"><i class="fa-regular fa-calendar-days"></i></div>
@@ -111,6 +114,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </div>
 </div>
 </div>
+
 <div class="right-all">
 <div class="card" style="flex:1 1 auto; display:flex; flex-direction:column;">
 <div class="card-header">
@@ -135,6 +139,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </ul>
 </div>
 </div>
+
 <div class="card" style="height:170px;display:flex;flex-direction:column;justify-content:space-between">
 <div class="card-header">
 <div class="icon"><i class="fa-solid fa-cloud-sun"></i></div>
@@ -152,6 +157,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </div>
 </div>
 </div>
+
 <div class="ticker" id="ticker">
 <div class="marquee" id="marq">7:44 — Přihlášky na lyžařský výcvik do 30.11. • Dnes: Přijde exkurze 9:00 • Sledujte web školy pro novinky.</div>
 </div>
@@ -160,14 +166,18 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 
 <script>
 const REFRESH_MIN = 15;
+
+// Funkce hodin
 function updateClock(){
 const d=new Date();
 document.getElementById('clock-time').textContent=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 document.getElementById('clock-date').textContent=d.toLocaleDateString('cs-CZ',{weekday:'long', year:'numeric', month:'long', day:'numeric'});
 document.getElementById('top-right-time').textContent=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
 }
-setInterval(updateClock,1000);updateClock();
+setInterval(updateClock,1000);
+updateClock();
 
+// Počasí
 async function fetchWeather(){
 try{
 const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true");
@@ -184,6 +194,7 @@ document.querySelector('#small-weather .w-main').textContent=`${cur.temperature}
 }catch(err){console.warn(err);}
 }
 
+// Jídelníček
 async function fetchLunch(){
 try{
 const proxy="https://api.allorigins.win/raw?url=";
@@ -194,11 +205,12 @@ const parser=new DOMParser();
 const doc=parser.parseFromString(html,'text/html');
 let sel=doc.querySelector('main, article, .entry-content, .post-content, .elementor-widget-container');
 let content=sel?sel.innerHTML:'<em>Nelze načíst</em>';
-content=content.replace(/<script[\\s\\S]*?<\\/script>/gi,'').replace(/<img[^>]*>/gi,'');
+content=content.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<img[^>]*>/gi,'');
 document.getElementById('obed').innerHTML=content;
 }catch(err){console.warn(err);}
 }
 
+// Odjezdy PID (ukázková data)
 async function fetchDepartures(){
 const stops=[
 {stop:"Příbram, Březové Hory, domov seniorů", lines:["393","502","517"]},
@@ -216,6 +228,7 @@ depDiv.appendChild(row);
 })
 }
 
+// Aktualizace všech dat
 async function fetchAll(){
 updateClock();
 fetchWeather();
