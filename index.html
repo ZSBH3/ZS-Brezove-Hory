@@ -4,153 +4,225 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Informační tabule — ZŠ Březové Hory</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ======== ZÁKLADNÍ NASTAVENÍ ======== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
       height: 100%;
       width: 100%;
-      font-family: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(120deg, #07162c, #102a5c, #07162c);
-      background-size: 300% 300%;
-      animation: bgmove 20s infinite alternate;
-      color: #eef3f8;
       overflow: hidden;
+      font-family: "Poppins", "Segoe UI", Roboto, sans-serif;
+      color: #eaf0f8;
+      background: radial-gradient(circle at 30% 20%, #0d1835, #081226, #030a15);
+      background-size: 400% 400%;
+      animation: gradientMove 25s ease infinite;
     }
 
-    @keyframes bgmove {
+    @keyframes gradientMove {
       0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
+    /* ======== HLAVNÍ OBSAH ======== */
     .board {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100%;
-      width: 100%;
-      padding: 20px;
-      gap: 20px;
+      align-items: center;
       text-align: center;
+      width: 100%;
+      height: 100%;
+      padding: 2rem;
+      gap: 1.5rem;
     }
 
     h1 {
       font-size: 3rem;
-      color: #ffd64e;
-      text-shadow: 0 0 20px rgba(255, 214, 78, 0.3);
-      margin-bottom: 10px;
+      color: #ffd94e;
+      text-shadow: 0 0 20px rgba(255,217,78,0.3);
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
+    .subtitle {
+      font-family: "Roboto Condensed";
+      color: #a9b5c9;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ======== MŘÍŽKA ======== */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 30px;
       width: 100%;
-      max-width: 1600px;
+      max-width: 1700px;
+      height: auto;
     }
 
+    /* ======== KARTY ======== */
     .card {
-      background: rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 25px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 22px;
+      padding: 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s ease, background 0.3s ease;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      background: rgba(255,255,255,0.12);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(255,255,255,0.15);
     }
 
+    /* ======== IKONY ======== */
     .icon {
-      font-size: 2.5rem;
+      font-size: 3rem;
+      color: #ffd94e;
       margin-bottom: 10px;
-      color: #ffd64e;
+      text-shadow: 0 0 25px rgba(255,217,78,0.5);
     }
 
     h2 {
+      font-size: 1.7rem;
+      color: #ffd94e;
       margin-bottom: 10px;
-      font-size: 1.5rem;
-      color: #ffd64e;
+      font-weight: 600;
     }
 
+    /* ======== ČAS A DATUM ======== */
     #cas {
-      font-size: 2.3rem;
-      font-weight: bold;
-      margin-bottom: 5px;
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
     #datum {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       opacity: 0.8;
+      font-family: "Roboto Condensed";
+      letter-spacing: 0.5px;
     }
 
+    /* ======== POČASÍ ======== */
     #pocasi {
       font-size: 1.3rem;
-      margin-top: 10px;
+      margin-top: 20px;
+      line-height: 1.5;
+      font-weight: 500;
     }
 
+    /* ======== JÍDELNÍČEK ======== */
     #obed {
+      width: 100%;
+      max-height: 420px;
+      overflow-y: auto;
       text-align: left;
       font-size: 1rem;
+      line-height: 1.7;
+      padding-right: 10px;
+      scrollbar-color: #ffd94e transparent;
+    }
+
+    #obed::-webkit-scrollbar {
+      width: 8px;
+    }
+    #obed::-webkit-scrollbar-thumb {
+      background-color: #ffd94e;
+      border-radius: 10px;
+    }
+
+    /* ======== OSTATNÍ ======== */
+    p {
+      font-size: 1.05rem;
+      color: #cfd8e2;
       line-height: 1.6;
-      overflow-y: auto;
-      width: 100%;
-      max-height: 400px;
-      scrollbar-color: #ffd64e transparent;
     }
 
     footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      opacity: 0.7;
+      font-size: 1rem;
+      color: #9ca7b6;
+      margin-top: 15px;
+      opacity: 0.8;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       h1 { font-size: 2rem; }
-      .grid { grid-template-columns: 1fr; }
+      #cas { font-size: 2rem; }
+      .card { padding: 20px; }
+    }
+
+    /* ======== ANIMACE GLYPH ======== */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .icon {
+      animation: pulse 4s ease-in-out infinite;
     }
   </style>
 </head>
+
 <body>
   <div class="board">
     <h1><i class="fa-solid fa-school"></i> Informační tabule ZŠ Březové Hory</h1>
+    <div class="subtitle">Aktuální informace • Dnešní oběd • Počasí • Akce • Novinky</div>
 
     <div class="grid">
+      <!-- ČAS A POČASÍ -->
       <div class="card">
         <i class="fa-regular fa-clock icon"></i>
         <div id="cas">--:--:--</div>
-        <div id="datum"></div>
+        <div id="datum">Načítám datum...</div>
         <div id="pocasi">Načítám počasí...</div>
       </div>
 
+      <!-- JÍDELNÍČEK -->
       <div class="card">
         <i class="fa-solid fa-utensils icon"></i>
         <h2>Dnešní oběd</h2>
-        <div id="obed">Načítám jídelníček...</div>
+        <div id="obed">Načítám jídelníček ze stránky školy...</div>
       </div>
 
+      <!-- PLÁN AKCÍ -->
       <div class="card">
         <i class="fa-regular fa-calendar-days icon"></i>
         <h2>Plán akcí</h2>
-        <p>Zatím žádné akce nejsou naplánovány.</p>
+        <p>
+          <b>24. října:</b> Den otevřených dveří<br>
+          <b>30. října:</b> Školní výlet – Praha Planetárium<br>
+          <b>6. listopadu:</b> Halloween dílna<br>
+          <b>20. listopadu:</b> Třídní schůzky<br>
+        </p>
       </div>
 
+      <!-- AKTUALITY -->
       <div class="card">
         <i class="fa-solid fa-bullhorn icon"></i>
         <h2>Aktuality ze školy</h2>
-        <p>Zatím žádné aktuality.</p>
+        <p>
+          📢 Nové učební pomůcky ve fyzice.<br>
+          📢 Od listopadu startuje školní kroužek robotiky.<br>
+          📢 Připravujeme vánoční jarmark.<br>
+        </p>
       </div>
     </div>
 
-    <footer>🔄 Stránka se aktualizuje každých 15 minut • © 2025 ZŠ Březové Hory</footer>
+    <footer>🔄 Stránka se automaticky aktualizuje každých 15 minut • © 2025 ZŠ Březové Hory</footer>
   </div>
 
   <script>
@@ -160,38 +232,43 @@
       const d = now.toLocaleDateString('cs-CZ', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
       const t = now.toLocaleTimeString('cs-CZ');
       document.getElementById('cas').textContent = t;
-      document.getElementById('datum').textContent = d;
+      document.getElementById('datum').textContent = d.charAt(0).toUpperCase() + d.slice(1);
     }
     setInterval(updateTime, 1000);
     updateTime();
 
-    // 🌦️ Počasí (Open-Meteo)
+    // 🌦️ Počasí
     async function loadWeather() {
       try {
         const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true");
         const data = await res.json();
-        const teplota = data.current_weather.temperature;
-        const vitr = data.current_weather.windspeed;
-        document.getElementById("pocasi").innerHTML = `🌡️ ${teplota} °C | 💨 Vítr ${vitr} km/h`;
-      } catch (e) {
+        const temp = data.current_weather.temperature;
+        const wind = data.current_weather.windspeed;
+        const code = data.current_weather.weathercode;
+        const icons = {
+          0: "☀️ Jasno", 1: "🌤️ Polojasno", 2: "⛅ Oblačno", 3: "☁️ Zataženo",
+          45: "🌫️ Mlha", 48: "🌫️ Mrznoucí mlha", 51: "🌦️ Mrholení", 61: "🌧️ Déšť",
+          71: "❄️ Sníh", 95: "⛈️ Bouřka"
+        };
+        const condition = icons[code] || "🌡️ Neznámé počasí";
+        document.getElementById("pocasi").innerHTML = `${condition}<br>Teplota: <b>${temp}°C</b><br>Vítr: ${wind} km/h`;
+      } catch {
         document.getElementById("pocasi").innerText = "Nelze načíst počasí.";
       }
     }
     loadWeather();
 
-    // 🍽️ Jídelníček přes proxy
+    // 🍽️ Jídelníček
     async function loadObed() {
       try {
         const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://zsbrezovehory.cz/jidelni-listek/");
         const res = await fetch(proxyUrl);
         const data = await res.json();
         let obsah = data.contents;
-
-        // zkusíme vybrat jen sekci jídelníčku (většinou v <main>)
-        const mainMatch = obsah.match(/<main[\\s\\S]*?<\\/main>/i);
-        if (mainMatch) obsah = mainMatch[0];
+        const match = obsah.match(/<main[\\s\\S]*?<\\/main>/i);
+        if (match) obsah = match[0];
         document.getElementById("obed").innerHTML = obsah;
-      } catch (e) {
+      } catch {
         document.getElementById("obed").innerText = "Nelze načíst jídelníček.";
       }
     }
