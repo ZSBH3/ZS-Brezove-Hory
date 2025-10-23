@@ -209,18 +209,19 @@ async function fetchLunch(){
     document.getElementById('obed').innerHTML=content;
   }catch(err){console.warn(err);document.getElementById('obed').innerHTML='<em>Chyba při načítání jídelníčku</em>';}
 }
-
+<script>
 // --- PID API ---
-const PID_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjQ0NzQ1LCJleHAiOjExNzYxMjQ0NzQ1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiMmEwYTNmMzctYjhmZC00OTRiLTlhZGMtMjAxMDI5NmY1ZjIyIn0.XbFISfitNArSKmBQcWaraGVPGv1_WYq9ZhXWC4uJerk'; // <-- sem vlož svůj API key
+const PID_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjQ0NzQ1LCJleHAiOjExNzYxMjQ0NzQ1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiMmEwYTNmMzctYjhmZC00OTRiLTlhZGMtMjAxMDI5NmY1ZjIyIn0.XbFISfitNArSKmBQcWaraGVPGv1_WYq9ZhXWC4uJerk';
 const PID_BASE = 'https://api.golemio.cz/pid/input-gateway/v1';
+
+const stops = [
+  {stopId:'1409175511863_MAI00278', name:'Příbram, II. poliklinika'},
+  {stopId:'1409175511863_MAI00279', name:'Příbram, Březové Hory, náměstí (směr Mariánská)'},
+  {stopId:'1409175511863_MAI00280', name:'Příbram, Březové Hory, náměstí (směr Zdaboř/Drkolnov)'}
+];
 
 async function fetchDepartures(){
   try{
-    const stops = [
-      {stopId:'1409175511863_MAI00278', name:'Příbram, Březové Hory, domov seniorů'},
-      {stopId:'1409175511863_MAI00279', name:'Příbram, Březové Hory, náměstí (směr Mariánská)'},
-      {stopId:'1409175511863_MAI00280', name:'Příbram, Březové Hory, náměstí (směr Zdaboř/Drkolnov)'}
-    ];
     const depDiv=document.getElementById('departures');
     depDiv.innerHTML='';
     for(const s of stops){
@@ -229,13 +230,19 @@ async function fetchDepartures(){
       const data=await res.json();
       if(data && data.departures){
         data.departures.forEach(d=>{
-          const row=document.createElement('div');row.className='dep-row';
+          const row=document.createElement('div');
+          row.className='dep-row';
           row.innerHTML=`<div>${d.line.name} → ${s.name}</div><div class="dep-time">${d.timePlannedRelative}</div>`;
           depDiv.appendChild(row);
         });
+      } else {
+        const row=document.createElement('div');
+        row.className='dep-row';
+        row.innerHTML=`<div>Žádné odjezdy → ${s.name}</div>`;
+        depDiv.appendChild(row);
       }
     }
-  }catch(err){console.warn(err);}
+  } catch(err){console.warn(err);}
 }
 
 // --- CELKOVÁ AKTUALIZACE ---
@@ -250,5 +257,3 @@ async function fetchAll(){
 fetchAll();
 setInterval(fetchAll,REFRESH_MIN*60*1000);
 </script>
-</body>
-</html>
