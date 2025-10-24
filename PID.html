@@ -20,7 +20,10 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#eaf2f5}
 body{display:flex;align-items:center;justify-content:center;padding:18px}
-.board{width:100%;height:100%;max-width:2000px;max-height:1200px;display:grid;grid-template-columns:1.35fr 0.95fr;grid-template-rows:1fr 1fr;gap:var(--gap);align-items:stretch;background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:26px;box-shadow:0 20px 60px rgba(1,8,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);overflow:hidden;}
+.board{width:100%;height:100%;max-width:2000px;max-height:1200px;display:grid;
+grid-template-columns:1.35fr 0.95fr;grid-template-rows:1fr 1fr;gap:var(--gap);
+align-items:stretch;background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+padding:22px;border-radius:26px;box-shadow:0 20px 60px rgba(1,8,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);overflow:hidden;}
 .topbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 16px;}
 .title{display:flex;align-items:center;gap:14px;}
 .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#00b3a6,#045a63);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;color:white;box-shadow:0 6px 18px rgba(0,0,0,0.5);}
@@ -64,6 +67,8 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </head>
 <body>
 <div class="board" id="board">
+
+<!-- Topbar -->
 <div class="topbar">
 <div class="title">
 <div class="logo">Š</div>
@@ -75,36 +80,33 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 <div class="meta">Napájení: online • Režim: veřejná tabule</div>
 </div>
 
+<!-- Levý horní panel: čas/hodina/progress, počasí, svátky -->
 <div class="left-top">
-<!-- Čas + hodina + progress + počasí -->
 <div class="card">
 <div class="card-header">
 <div class="icon"><i class="fa-regular fa-clock"></i></div>
-<div><h3>Čas & Datum</h3><div class="meta">Přesnost: systémová</div></div>
+<div><h3>Čas & Hodina</h3><div class="meta">Přesnost: systémová</div></div>
 </div>
 <div class="clock-box">
 <div id="clock-time">--:--:--</div>
 <div id="clock-date">—</div>
 <div id="current-hour">Hodina: —</div>
 <div class="progress-bar"><div id="hour-progress" class="progress-bar-inner"></div></div>
-<div class="weather-compact"><div class="w-icon">⛅</div><div class="w-main">Načítám počasí...</div></div>
 <div id="holiday">Svátek: —</div>
 </div>
 </div>
 
-<!-- Odjezdy PID -->
 <div class="card">
 <div class="card-header">
-<div class="icon"><i class="fa-solid fa-bus"></i></div>
-<div><h3>Odjezdy PID</h3><div class="meta">Autobusy</div></div>
+<div class="icon"><i class="fa-solid fa-cloud-sun"></i></div>
+<div><h3>Počasí</h3><div class="meta">Aktuální + 2 dny</div></div>
 </div>
-<div class="departures" id="departures">Načítám odjezdy...</div>
+<div class="weather-forecast" id="weather">Načítám...</div>
 </div>
 </div>
 
-<!-- Další karty ... oběd, plán akcí, aktuality, počasí → nechávám původní -->
+<!-- Levý dolní panel: jídelníček a plán akcí -->
 <div class="left-bottom">
-<!-- Oběd, plán akcí -->
 <div class="card" style="min-height:260px">
 <div class="card-header">
 <div class="icon"><i class="fa-solid fa-utensils"></i></div>
@@ -117,18 +119,26 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 <div class="card-header">
 <div class="icon"><i class="fa-regular fa-calendar-days"></i></div>
 <div><h3>Plán akcí</h3><div class="meta">Týdenní přehled</div></div>
-</div>
 <div id="events">Načítám akce...</div>
 </div>
 </div>
 
+<!-- Pravý panel: odjezdy PID + novinky -->
 <div class="right-all">
 <div class="card">
 <div class="card-header">
-<div class="icon"><i class="fa-solid fa-cloud-sun"></i></div>
-<div><h3>Počasí</h3><div class="meta">Aktuální + 2 dny</div></div>
+<div class="icon"><i class="fa-solid fa-bus"></i></div>
+<div><h3>Odjezdy PID</h3><div class="meta">Autobusy</div></div>
 </div>
-<div class="weather-forecast" id="weather">Načítám...</div>
+<div class="departures" id="departures">Načítám odjezdy...</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div class="icon"><i class="fa-solid fa-newspaper"></i></div>
+<div><h3>Novinky</h3><div class="meta">Školní aktuality</div></div>
+</div>
+<div class="news" id="news">Načítám...</div>
 </div>
 </div>
 
@@ -136,6 +146,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 </div>
 
 <script>
+// ========================== Čas a hodina + progress ==========================
 function updateClock(){
   const now = new Date();
   const hours = now.getHours().toString().padStart(2,'0');
@@ -143,20 +154,17 @@ function updateClock(){
   const seconds = now.getSeconds().toString().padStart(2,'0');
   document.getElementById('clock-time').textContent = `${hours}:${minutes}:${seconds}`;
   document.getElementById('clock-date').textContent = now.toLocaleDateString('cs-CZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  // Hodina 0–9
-  const startHour = 7; // první hodina 7:00
-  const endHour = 16; // poslední hodina 16:00
-  const totalHours = 10; // 0–9
-  let h = Math.floor((now.getHours()-startHour)*60+now.getMinutes())/((endHour-startHour)*60)*totalHours;
+
+  const startHour = 7; 
+  const totalHours = 10; 
+  let h = Math.floor((now.getHours()-startHour)*60+now.getMinutes())/((16-7)*60)*totalHours;
   h = Math.min(Math.max(Math.floor(h),0),9);
   document.getElementById('current-hour').textContent = `Hodina: ${h}`;
-  // Progress bar hodiny
-  const currentMinute = now.getMinutes();
-  const prog = (currentMinute/60*100).toFixed(1);
+  const prog = (now.getMinutes()/60*100).toFixed(1);
   document.getElementById('hour-progress').style.width = prog+'%';
 }
 
-// Svátky CZ
+// ========================== Svátky ==========================
 async function loadHoliday(){
   try{
     const now = new Date();
@@ -166,65 +174,53 @@ async function loadHoliday(){
     const data = await res.json();
     const h = data.svatky.map(s=>s.jmeno).join(', ');
     document.getElementById('holiday').textContent = `Svátek: ${h}`;
-  }catch(e){
-    document.getElementById('holiday').textContent = 'Svátek: —';
-  }
+  }catch(e){document.getElementById('holiday').textContent = 'Svátek: —';}
 }
 
-// Počasí — OpenWeatherMap (můžeš dát svůj API klíč)
-const OWM_KEY = 'TVŮJ_API_KEY';
+// ========================== Počasí ==========================
+const OWM_KEY = 'TVŮJ_API_KEY'; // sem svůj klíč
 async function loadWeather(){
   try{
     const cityId = '3067696'; // Příbram
     const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&units=metric&lang=cs&cnt=16&appid=${OWM_KEY}`);
     const data = await res.json();
-    // Aktuální
     const now = new Date();
     let current = data.list.find(l=>new Date(l.dt*1000).getHours()===now.getHours()) || data.list[0];
     document.querySelector('.weather-compact .w-icon').textContent = '🌤️';
     document.querySelector('.weather-compact .w-main').textContent = `${Math.round(current.main.temp)}°C, ${current.weather[0].description}`;
-    // Zítra a pozítří
-    const forecastEl = document.getElementById('weather');
-    forecastEl.innerHTML='';
+    const forecastEl = document.getElementById('weather'); forecastEl.innerHTML='';
     const days = [];
     data.list.forEach(item=>{
       const d = new Date(item.dt*1000);
       const dateStr = d.toLocaleDateString('cs-CZ',{weekday:'short',day:'numeric',month:'numeric'});
-      if(!days.find(x=>x.date===dateStr)){
-        days.push({date:dateStr,temp:Math.round(item.main.temp),desc:item.weather[0].description,icon:'🌤️'});
-      }
+      if(!days.find(x=>x.date===dateStr)) days.push({date:dateStr,temp:Math.round(item.main.temp),desc:item.weather[0].description,icon:'🌤️'});
     });
     days.slice(0,3).forEach(d=>{
       const div = document.createElement('div');
       div.textContent = `${d.date}: ${d.temp}°C, ${d.desc}`;
       forecastEl.appendChild(div);
     });
-  }catch(e){
-    document.getElementById('weather').textContent='Počasí nenahráno';
-  }
+  }catch(e){document.getElementById('weather').textContent='Počasí nenahráno';}
 }
 
-// Odjezdy PID — přes lokální proxy nebo přímo (pokud funguje CORS)
+// ========================== Odjezdy PID ==========================
 async function loadDepartures(){
   try{
-    const stopId='52838'; // Příbram, Březové Hory, Mariánská
+    const stopId='52838'; 
     const res = await fetch(`http://localhost:3000/departures?stopAreaId=${stopId}&maxNo=5`);
     const data = await res.json();
-    const depEl = document.getElementById('departures');
-    depEl.innerHTML='';
+    const depEl = document.getElementById('departures'); depEl.innerHTML='';
     if(data.departures){
       data.departures.forEach(d=>{
-        const div=document.createElement('div');
-        div.className='dep-row';
+        const div=document.createElement('div'); div.className='dep-row';
         div.innerHTML=`<span>${d.line}</span><span class="dep-time">${d.time}</span>`;
         depEl.appendChild(div);
       });
     }else depEl.textContent='Žádné odjezdy';
-  }catch(e){
-    document.getElementById('departures').textContent='Chyba při načítání odjezdů';
-  }
+  }catch(e){document.getElementById('departures').textContent='Chyba při načítání odjezdů';}
 }
 
+// ========================== Aktualizace celého obsahu ==========================
 function updateAll(){
   updateClock();
   loadHoliday();
@@ -235,6 +231,8 @@ function updateAll(){
 updateAll();
 setInterval(updateClock,1000);
 setInterval(updateAll,30000);
+
 </script>
 </body>
 </html>
+
