@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <style>
-/* --- STYL --- */
 :root{
 --bg1:#08272d;
 --bg2:#0e3b46;
@@ -90,9 +89,9 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 <div class="card">
 <div class="card-header">
 <div class="icon"><i class="fa-solid fa-bus"></i></div>
-<div><h3>Odjezdy PID</h3><div class="meta">Autobusy</div></div>
+<div><h3>Odjezdy PID</h3><div class="meta">Autobusy & vlaky</div></div>
 </div>
-<div class="departures" id="departures"></div>
+<div class="departures" id="departures">Načítám odjezdy...</div>
 </div>
 </div>
 
@@ -212,15 +211,14 @@ async function fetchLunch(){
 }
 
 // --- PID API ---
-const PID_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjQ0NzQ1LCJleHAiOjExNzYxMjQ0NzQ1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiMmEwYTNmMzctYjhmZC00OTRiLTlhZGMtMjAxMDI5NmY1ZjIyIn0.XbFISfitNArSKmBQcWaraGVPGv1_WYq9ZhXWC4uJerk';
+const PID_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjQ0NzQ1LCJleHAiOjExNzYxMjQ0NzQ1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiMmEwYTNmMzctYjhmZC00OTRiLTlhZGMtMjAxMDI5NmY1ZjIyIn0.XbFISfitNArSKmBQcWaraGVPGv1_WYq9ZhXWC4uJerk'; // <-- vlož svůj API key
 const PID_BASE = 'https://api.golemio.cz/pid/input-gateway/v1';
 
 async function fetchDepartures(){
   try{
     const stops = [
-      {stopId:'1409175511863_MAI00278', name:'Příbram, Březové Hory, domov seniorů'},
-      {stopId:'1409175511863_MAI00279', name:'Příbram, Březové Hory, náměstí (směr Mariánská)'},
-      {stopId:'1409175511863_MAI00280', name:'Příbram, Březové Hory, náměstí (směr Zdaboř/Drkolnov)'}
+      {stopId:'U9739Z1', name:'Příbram, Březové Hory, náměstí (platforma A)'}
+      // sem můžeš přidat další zastávky
     ];
     const depDiv=document.getElementById('departures');
     depDiv.innerHTML='';
