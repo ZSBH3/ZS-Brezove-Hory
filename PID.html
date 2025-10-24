@@ -4,18 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Informační tabule — ZŠ Březové Hory</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
   <style>
     :root {
-      --bg1: #08272d;
-      --bg2: #0e3b46;
+      --bg1: #0b1f2a;
+      --bg2: #12394d;
       --accent: #ff8a3d;
       --accent-2: #ffd9b8;
       --glass: rgba(255,255,255,0.04);
-      --card: #0b2530;
+      --card: #0e2c3a;
       --muted: #9fb0bd;
       --radius: 18px;
       --gap: 18px;
@@ -118,69 +116,63 @@
 </head>
 <body>
   <div class="board">
-    <!-- TOPBAR -->
-    <div class="topbar">
-      <div class="title">
-        <div class="logo">Š</div>
-        <div>
-          <div class="school-name">ZŠ Březové Hory</div>
-          <div class="meta" id="meta-status">Aktualizováno: —</div>
-        </div>
-      </div>
-      <div class="meta">Napájení: online • Režim: veřejná tabule</div>
-    </div>
-
-    <!-- Čas & přestávka -->
+    <!-- Čas & Svátek -->
     <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-regular fa-clock"></i></div><h3>Čas & Datum</h3></div>
-      <div id="clock-time" style="font-size:48px;font-weight:700">--:--:--</div>
+      <div class="card-header">
+        <div class="icon"><i class="fa-regular fa-clock"></i></div>
+        <h3>Čas & Svátek</h3>
+      </div>
+      <div id="clock-time" style="font-size:48px;font-weight:700">--:--</div>
       <div id="clock-date" style="font-size:16px;color:var(--muted)">—</div>
       <div id="current-holiday" style="font-size:14px;color:var(--accent-2)">Svátek: —</div>
     </div>
 
-    <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-hourglass-half"></i></div><h3>Hodina / přestávka</h3></div>
-      <div class="progress-row">
-        <div class="time-left" id="time-left">--</div>
-        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-        <div class="time-end" id="time-end">--:--</div>
-      </div>
-      <div class="block-info" id="current-block-info">—</div>
-    </div>
-
     <!-- Počasí -->
     <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-cloud-sun"></i></div><h3>Počasí (Příbram)</h3></div>
-      <div id="weather-now" class="weather-day">Načítám aktuální počasí...</div>
-      <div id="weather-day1" class="weather-day">Načítám zítra...</div>
-      <div id="weather-day2" class="weather-day">Načítám pozítří...</div>
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-cloud-sun"></i></div>
+        <h3>Počasí (Příbram)</h3>
+      </div>
+      <div id="weather-now">Načítám aktuální počasí...</div>
+      <div id="weather-day1">Zítra: —</div>
+      <div id="weather-day2">Pozítří: —</div>
     </div>
 
     <!-- Jídelníček -->
     <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-utensils"></i></div><h3>Dnešní oběd</h3></div>
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-utensils"></i></div>
+        <h3>Dnešní oběd</h3>
+      </div>
       <div id="obed">Načítám jídelníček...</div>
     </div>
 
     <!-- Odjezdy PID -->
     <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-bus"></i></div><h3>Odjezdy PID — vybrané zastávky</h3></div>
-      <div id="departures" class="departures">
-        <div class="small-meta">Načítám odjezdy...</div>
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-bus"></i></div>
+        <h3>Odjezdy autobusů</h3>
       </div>
-      <div class="meta" id="pid-note">Načítám odjezdy...</div>
-    </div>
-
-    <!-- Rychlé info -->
-    <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-info-circle"></i></div><h3>Rychlé info</h3></div>
-      <div class="meta">Přihlášky na lyžařský výcvik do 30.11. • Kroužek robotiky od 1.11.</div>
+      <div id="departures">Načítám odjezdy...</div>
+      <div id="pid-note" style="font-size:12px;color:var(--muted)">Zobrazení vyžaduje školní proxy server</div>
     </div>
 
     <!-- Rozvrh hodin -->
     <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-list"></i></div><h3>Rozvrh (rychle)</h3></div>
-      <div class="meta">Nultá 07:00–07:45 • 1. 08:00–08:45 • 2. 08:55–09:40 • 3. 10:00–10:45 • ...</div>
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-list"></i></div>
+        <h3>Rozvrh hodin</h3>
+      </div>
+      <div id="schedule">
+        <div class="meta">1. 08:00–08:45 • 2. 08:55–09:40 • 3. 10:00–10:45 • 4. 10:55–11:40 • 5. 11:50–12:35</div>
+        <div id="current-block-info" style="margin-top:8px;color:var(--accent-2)">—</div>
+        <div class="progress-track" style="height:6px;background:#12394d;border-radius:3px;margin-top:6px;">
+          <div class="progress-fill" id="progress-fill" style="height:6px;background:var(--accent);width:0%;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">
+          Zbývá: <span id="time-left">—</span> • Do: <span id="time-end">—</span>
+        </div>
+      </div>
     </div>
   </div> <!-- konec .board -->
 
@@ -218,7 +210,7 @@
 
     async function fetchWeather(){
       try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=49.6895&longitude=14.0106&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe/Prague');
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=49.6895&longitude=14.0106&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Prague');
         const data = await res.json();
         const w = data?.current_weather;
         const text = `${w.temperature} °C • Vítr ${w.windspeed} km/h`;
@@ -256,16 +248,8 @@
       document.getElementById('pid-note').textContent = 'Pro zobrazení odjezdů je potřeba server-proxy.';
     }
 
-    function initTicker(){
-      const m = document.getElementById('marq');
-      if(m.textContent.length < 80){
-        m.textContent += ' • ' + m.textContent + ' • ' + m.textContent;
-      }
-    }
-
     function updateSchedule(){
       const blocks = [
-        {start:'07:00', end:'07:45', label:'Nultá hodina'},
         {start:'08:00', end:'08:45', label:'1. hodina'},
         {start:'08:55', end:'09:40', label:'2. hodina'},
         {start:'10:00', end:'10:45', label:'3. hodina'},
@@ -302,13 +286,20 @@
       }
     }
 
+    function initTicker(){
+      const m = document.getElementById('marq');
+      if(m.textContent.length < 80){
+        m.textContent += ' • ' + m.textContent + ' • ' + m.textContent;
+      }
+    }
+
     updateClock();
     fetchHoliday();
     fetchWeather();
     fetchLunch();
     fetchDepartures();
-    initTicker();
     updateSchedule();
+    initTicker();
 
     setInterval(updateClock, 1000);
     setInterval(fetchWeather, 15 * 60 * 1000);
