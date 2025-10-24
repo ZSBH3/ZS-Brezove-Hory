@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Informační tabule — ZŠ Březové Hory</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -18,6 +18,8 @@
 --gap:18px;
 --progress-bg:#1c4a56;
 --progress-fill:#ff8a3d;
+--ticker-bg:#072f3c;
+--ticker-color:#ffd9b8;
 }
 *{box-sizing:border-box;}
 html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#eaf2f5;display:flex;justify-content:center;align-items:center;padding:10px;}
@@ -52,179 +54,157 @@ html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linea
 .news-txt{flex:1;}
 #obed{font-size:1rem;line-height:1.6;color:#eaf2f5;overflow:auto;padding-right:6px;}
 #obed h4{margin:0 0 8px 0;color:#ffd9b8;}
-.ticker{grid-column:1/-1;height:38px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;overflow:hidden;padding:6px 12px;border:1px solid rgba(255,255,255,0.03);}
-.ticker .marquee{white-space:nowrap;display:inline-block;transform:translate3d(0,0,0);animation:marq 22s linear infinite;}
-@keyframes marq{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ticker{grid-column:1/-1;height:38px;border-radius:10px;background:var(--ticker-bg);display:flex;align-items:center;overflow:hidden;padding:6px 12px;border:1px solid rgba(255,255,255,0.03);}
+.ticker .marquee{white-space:nowrap;display:inline-block;transform:translate3d(100%,0,0);animation:marq 22s linear infinite;}
+@keyframes marq{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}} 
 .live-clock-badge{position:fixed;left:28px;bottom:28px;background:var(--accent);color:#081018;padding:10px 14px;border-radius:10px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:40;}
 @media(max-width:1600px){.board{grid-template-columns:1fr;grid-template-rows:auto 1fr 1fr;align-items:start;}.left-top,.left-bottom,.center-top,.center-bottom{grid-column:1;}.right-all{grid-column:1;}.live-clock-badge{left:14px;bottom:14px;font-size:14px;}}
 </style>
 </head>
 <body>
 <div class="board" id="board">
-<div class="topbar">
-<div class="title">
-<div class="logo">Š</div>
-<div>
-<div class="school-name">ZŠ Březové Hory</div>
-<div class="meta" id="meta-status">Aktualizováno: —</div>
-</div>
-</div>
-<div class="meta">Napájení: online • Režim: veřejná tabule</div>
-</div>
+  <div class="topbar">
+    <div class="title">
+      <div class="logo">Š</div>
+      <div>
+        <div class="school-name">ZŠ Březové Hory</div>
+        <div class="meta" id="meta-status">Aktualizováno: —</div>
+      </div>
+    </div>
+    <div class="meta">Napájení: online • Režim: veřejná tabule</div>
+  </div>
 
-<!-- Levá část: čas a PID -->
-<div class="left-top">
-<div class="card">
-<div class="card-header"><div class="icon"><i class="fa-regular fa-clock"></i></div><div><h3>Čas & Hodina</h3><div class="meta">Přesnost: systémová</div></div></div>
-<div class="clock-box">
-<div id="clock-time">--:--:--</div>
-<div id="clock-date">—</div>
-<div id="clock-hour">Hodina: —</div>
-<div id="clock-svatek">Svátek: —</div>
-<div class="progress-bar"><div class="progress-fill" id="hour-progress"></div></div>
-</div>
-</div>
+  <div class="left-top">
+    <div class="card">
+      <div class="card-header"><div class="icon"><i class="fa-regular fa-clock"></i></div><div><h3>Čas & Hodina</h3><div class="meta">Přesnost: systémová</div></div></div>
+      <div class="clock-box">
+        <div id="clock-time">--:--:--</div>
+        <div id="clock-date">—</div>
+        <div id="clock-hour">Hodina: —</div>
+        <div id="clock-svatek">Svátek: —</div>
+        <div class="progress-bar"><div class="progress-fill" id="hour-progress"></div></div>
+      </div>
+    </div>
 
-<div class="card">
-<div class="card-header"><div class="icon"><i class="fa-solid fa-bus"></i></div><div><h3>Odjezdy PID</h3><div class="meta">Autobusy</div></div></div>
-<div class="departures" id="departures">Načítám odjezdy...</div>
-</div>
-</div>
+    <div class="card">
+      <div class="card-header"><div class="icon"><i class="fa-solid fa-bus"></i></div><div><h3>Odjezdy PID</h3><div class="meta">Autobusy</div></div></div>
+      <div class="departures" id="departures">Načítám odjezdy...</div>
+    </div>
+  </div>
 
-<!-- Střední část: počasí -->
-<div class="center-top">
-<div class="card">
-<div class="card-header"><div class="icon"><i class="fa-solid fa-cloud-sun"></i></div><div><h3>Počasí</h3><div class="meta">Open-Meteo</div></div></div>
-<div class="weather-box" id="weather-box">Načítám počasí...</div>
-</div>
-<div class="card">
-<div class="card-header"><div class="icon"><i class="fa-regular fa-calendar-days"></i></div><div><h3>Plán akcí</h3><div class="meta">Nejbližší události</div></div></div>
-<div id="plan-akci">Načítám akce...</div>
-</div>
-</div>
+  <div class="center-top">
+    <div class="card">
+      <div class="card-header"><div class="icon"><i class="fa-solid fa-cloud-sun"></i></div><div><h3>Počasí</h3><div class="meta">Open-Meteo</div></div></div>
+      <div class="weather-box" id="weather-box">Načítám počasí...</div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="icon"><i class="fa-regular fa-calendar-days"></i></div><div><h3>Plán akcí</h3><div class="meta">Nejbližší události</div></div></div>
+      <div id="plan-akci">Načítám akce...</div>
+    </div>
+  </div>
 
-<div class="center-bottom">
-<div class="card" style="min-height:260px">
-<div class="card-header"><div class="icon"><i class="fa-solid fa-utensils"></i></div><div><h3>Dnešní oběd</h3><div class="meta">Zdroj: zsbrezovehory.cz</div></div></div>
-<div id="obed"><em>Načítám jídelníček...</em></div>
-</div>
-</div>
+  <div class="center-bottom">
+    <div class="card" style="min-height:260px">
+      <div class="card-header"><div class="icon"><i class="fa-solid fa-utensils"></i></div><div><h3>Dnešní oběd</h3><div class="meta">Zdroj: zsbrezovehory.cz</div></div></div>
+      <div id="obed"><em>Načítám jídelníček...</em></div>
+    </div>
+  </div>
 
-<!-- Pravá část: novinky -->
-<div class="right-all">
-<div class="card" style="flex:1 1 auto;">
-<div class="card-header"><div class="icon"><i class="fa-solid fa-newspaper"></i></div><div><h3>Novinky</h3><div class="meta">Školní aktuality</div></div></div>
-<div class="news" id="news">Načítám...</div>
-</div>
-</div>
+  <div class="right-all">
+    <div class="card" style="flex:1 1 auto;">
+      <div class="card-header"><div class="icon"><i class="fa-solid fa-newspaper"></i></div><div><h3>Novinky</h3><div class="meta">Školní aktuality</div></div></div>
+      <div class="news" id="news">Načítám...</div>
+    </div>
+  </div>
 
-<div class="ticker" id="ticker"><div class="marquee" id="marq">Ve čtvrtek 30. října se budou od 9:40 rozdávat tradiční anglické certifikáty ve velké tělocvičně.</div></div>
-<div class="live-clock-badge" id="top-right-time">--:--</div>
+  <div class="ticker" id="ticker"><div class="marquee" id="marq">Ve čtvrtek 30. října se budou od 9:40 rozdávat tradiční anglické certifikáty ve velké tělocvičně.</div></div>
+  <div class="live-clock-badge" id="top-right-time">--:--</div>
 </div>
 
 <script>
-const REFRESH_MIN=5;
+const PID_API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjg1NTE1LCJleHAiOjExNzYxMjg1NTE1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiYzNmYWY5MGMtMGEyMi00OWE1LWI1MDktM2NiM2YwN2NiOGU0In0.ugD7g2PQ_aLZX3Hhke3rnbxFWcmn_d_5_4BXcRH9qpw';
 
-// --- ČAS ---
+// --- Hodiny ---
 function updateClock(){
   const d=new Date();
   const hour=d.getHours();
   document.getElementById('clock-time').textContent=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   document.getElementById('clock-date').textContent=d.toLocaleDateString('cs-CZ',{weekday:'long', year:'numeric', month:'long', day:'numeric'});
   document.getElementById('clock-hour').textContent='Hodina: '+(hour+1);
-  const svatek=new Date();
-  const svatekList={'10-24':'František'}; // Můžeš doplnit celý seznam
-  const key=(svatek.getMonth()+1).toString().padStart(2,'0')+'-'+svatek.getDate().toString().padStart(2,'0');
+  const svatekList={'10-24':'František'};
+  const key=(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
   document.getElementById('clock-svatek').textContent='Svátek: '+(svatekList[key]||'—');
-  const progress=(hour/24)*100;
-  document.getElementById('hour-progress').style.width=progress+'%';
+  document.getElementById('hour-progress').style.width=(hour/24*100)+'%';
   document.getElementById('top-right-time').textContent=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
 }
 
-// --- POČASÍ ---
-async function fetchWeather(){
-  try{
-    const lat=49.69,lon=14.01;
-    const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode`);
-    const data=await res.json();
-    const cur=data.current_weather;
-    document.getElementById('weather-box').innerHTML='';
-    const todayWeather=`${cur.temperature} °C`;
-    const days=[0,1,2];
-    for(const i of days){
-      const day=data.daily.time[i];
-      const max=data.daily.temperature_2m_max[i];
-      const min=data.daily.temperature_2m_min[i];
-      const code=data.daily.weathercode[i];
-      const map={0:'Jasno',1:'Polojasno',2:'Oblačno',3:'Zataženo',45:'Mlha',48:'Mrznoucí mlha',51:'Slabé mrholení',61:'Déšť',71:'Sníh',95:'Bouřka'};
-      const text=map[code]||'—';
-      const div=document.createElement('div');
-      div.className='weather-day';
-      div.innerHTML=`<span>${day}</span><span>${text}, ${min}°C–${max}°C</span>`;
-      document.getElementById('weather-box').appendChild(div);
-    }
-  }catch(err){console.warn(err);document.getElementById('weather-box').textContent='Počasí nenahráno';}
-}
-
-// --- JÍDELNÍČEK ---
-async function fetchLunch(){
-  try{
-    const proxy="https://api.allorigins.win/raw?url=";
-    const url="https://zsbrezovehory.cz/jidelni-listek/";
-    const r=await fetch(proxy+encodeURIComponent(url));
-    const html=await r.text();
-    const parser=new DOMParser();
-    const doc=parser.parseFromString(html,'text/html');
-    let sel=doc.querySelector('main, article, .entry-content, .post-content, .elementor-widget-container');
-    let content=sel?sel.innerHTML:'<em>Nelze načíst</em>';
-    content=content.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<img[^>]*>/gi,'');
-    document.getElementById('obed').innerHTML=content;
-  }catch(err){console.warn(err);document.getElementById('obed').innerHTML='<em>Chyba při načítání jídelníčku</em>';}
-}
-
-// --- PID API ---
-const PID_API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjg1NTE1LCJleHAiOjExNzYxMjg1NTE1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiYzNmYWY5MGMtMGEyMi00OWE1LWI1MDktM2NiM2YwN2NiOGU0In0.ugD7g2PQ_aLZX3Hhke3rnbxFWcmn_d_5_4BXcRH9qpw';
+// --- Odjezdy PID ---
 async function fetchPID(){
-  try{
-    const stops=[
-      {id:'52838',name:'Příbram, Březové Hory, Mariánská'},
-      {id:'9739/1',name:'Příbram, Březové Hory, náměstí (platforma A)'},
-      {id:'1409175511863_MAI00278',name:'Příbram, Březové Hory, domov seniorů'}
-    ];
-    const container=document.getElementById('departures');
-    container.innerHTML='';
-    for(const s of stops){
-      const div=document.createElement('div');
-      div.className='dep-row';
-      const name=document.createElement('span');
-      name.textContent=s.name;
-      const time=document.createElement('span');
-      time.textContent='Načítám...';
-      div.appendChild(name);
-      div.appendChild(time);
-      container.appendChild(div);
-      // fetch
+  const stops=[
+    {id:'52838',name:'Příbram, Březové Hory, Mariánská'},
+    {id:'9739/1',name:'Příbram, Březové Hory, náměstí (platforma A)'},
+    {id:'1409175511863_MAI00278',name:'Příbram, Březové Hory, domov seniorů'}
+  ];
+  const container=document.getElementById('departures');
+  container.innerHTML='';
+  for(const s of stops){
+    const div=document.createElement('div');
+    div.className='dep-row';
+    const name=document.createElement('span'); name.textContent=s.name;
+    const time=document.createElement('span'); time.textContent='Načítám...';
+    div.appendChild(name); div.appendChild(time); container.appendChild(div);
+    try{
       const res=await fetch(`https://api.golemio.cz/pid/input-gateway/v1/departures?stopAreaId=${encodeURIComponent(s.id)}&maxNo=6`,{
         headers:{Authorization:'Bearer '+PID_API_KEY}
       });
       const data=await res.json();
       if(data.data && data.data[0] && data.data[0].departures){
-        const dep=data.data[0].departures.map(d=>d.time).join(', ');
-        time.textContent=dep||'—';
+        const depList=data.data[0].departures.map(d=>`${d.line} → ${d.time}${d.delay?` (${d.delay} min)`:''}`);
+        time.textContent=depList.join(' | ')||'—';
       }else{time.textContent='—';}
-    }
-  }catch(err){console.warn(err);document.getElementById('departures').textContent='Chyba při načítání odjezdů';}
+    }catch(err){time.textContent='Chyba';}
+  }
 }
 
-// --- NOVINKY (demo) ---
+// --- Počasí ---
+async function fetchWeather(){
+  const lat=49.689; // Příbram
+  const lon=14.010;
+  const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=Europe/Prague`);
+  const data=await res.json();
+  const box=document.getElementById('weather-box');
+  box.innerHTML='';
+  // Aktuální
+  const cur=document.createElement('div'); cur.className='weather-day';
+  cur.innerHTML=`<span>Teď: ${data.current_weather.temperature}°C</span><span>${data.current_weather.weathercode}</span>`;
+  box.appendChild(cur);
+  // Předpověď
+  for(let i=0;i<2;i++){
+    const day=document.createElement('div'); day.className='weather-day';
+    day.innerHTML=`<span>${data.daily.time[i]}</span><span>${data.daily.temperature_2m_min[i]}°C / ${data.daily.temperature_2m_max[i]}°C</span>`;
+    box.appendChild(day);
+  }
+}
+
+// --- Jídelníček ---
+async function fetchObed(){
+  const obed=document.getElementById('obed');
+  // simulace, pokud není API
+  obed.innerHTML=`<h4>Pondělí</h4>Kuřecí řízek, brambory, salát<br>
+  <h4>Úterý</h4>Vepřová pečeně, knedlík, zelí<br>
+  <h4>Středa</h4>Špagety Boloňská<br>
+  <h4>Čtvrtek</h4>Losos pečený, brambory, zelenina<br>
+  <h4>Pátek</h4>Fazolová polévka, chléb`;
+}
+
+// --- Novinky ---
 const newsItems=[
 {title:'První školní den po prázdninách','thumb':'','desc':'Žáci se setkali po dlouhé pauze...'},
 {title:'Projekt Environmentální dny','thumb':'','desc':'Škola organizuje soutěže a workshopy pro žáky.'},
 {title:'Lyžařský výcvik','thumb':'','desc':'Lyžařský kurz pro 7. ročník se uskuteční v únoru.'}
 ];
 function updateNews(){
-  const n=document.getElementById('news');
-  n.innerHTML='';
+  const n=document.getElementById('news'); n.innerHTML='';
   newsItems.forEach(it=>{
     const div=document.createElement('div');
     div.className='news-item';
@@ -234,18 +214,16 @@ function updateNews(){
   });
 }
 
-// --- INIT ---
-function init(){
+// --- Init ---
+async function init(){
   updateClock();
-  fetchWeather();
-  fetchLunch();
-  fetchPID();
+  await fetchPID();
+  await fetchWeather();
+  await fetchObed();
   updateNews();
   setInterval(updateClock,1000);
-  setInterval(fetchWeather,15*60*1000);
-  setInterval(fetchLunch,30*60*1000);
-  setInterval(fetchPID,60*1000);
-  setInterval(updateNews,300*1000);
+  setInterval(fetchPID,30000);
+  setInterval(fetchWeather,3600000);
 }
 init();
 </script>
