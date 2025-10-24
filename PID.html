@@ -11,35 +11,36 @@
 <style>
   :root{
     --bg1:#08272d; --bg2:#0e3b46; --accent:#ff8a3d;
-    --glass: rgba(255,255,255,0.04);
+    --accent-2:#ffd9b8; --glass: rgba(255,255,255,0.04);
     --card:#0b2530; --muted:#9fb0bd;
     --radius:18px; --gap:18px;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#eaf2f5}
-  body{display:flex;align-items:center;justify-content:center;padding:18px}
+  body{display:flex;align-items:center;justify-content:center;padding:12px}
   .board{
-    width:100%; max-width:2200px; height:94vh;
+    width:100%; max-width:2200px; height:96vh;
     display:grid;
-    grid-template-columns: 1.4fr 0.9fr 0.9fr;
+    grid-template-columns: 1.3fr 1fr 0.9fr;
     grid-template-rows: auto 1fr;
     gap:var(--gap);
     padding:22px;
     border-radius:22px;
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    box-shadow: 0 26px 100px rgba(0,0,0,0.6);
     overflow:hidden;
   }
+
   .topbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:6px 16px}
   .title{display:flex;gap:14px;align-items:center}
   .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#00b3a6,#045a63);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:white;box-shadow:0 8px 26px rgba(0,0,0,0.5)}
   .school-name{font-size:26px;font-weight:700;color:#ffefdc}
   .meta{color:var(--muted);font-size:13px}
 
-  .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:16px; box-shadow: 0 8px 28px rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column; gap:12px;}
+  .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:14px; box-shadow: 0 10px 30px rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column; gap:12px;}
   .card-header{display:flex;gap:12px;align-items:center}
   .card-header .icon{font-size:26px;color:var(--accent)}
-  .card-header h3{margin:0;color:#ffdcbc;font-size:18px}
+  .card-header h3{margin:0;color:var(--accent-2);font-size:18px}
 
   /* layout */
   .left-top{grid-column:1/2;grid-row:1/2;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
@@ -55,21 +56,22 @@
   #clock-time{font-size:56px;font-weight:800;letter-spacing:1px}
   #clock-date{color:var(--muted);font-size:15px}
 
-  /* Progress */
+  /* Progress bar */
   .progress-row{display:flex;align-items:center;gap:12px}
-  .time-left{width:110px;font-weight:700;color:#ffd9b8}
+  .time-left{width:110px;font-weight:700;color:var(--accent-2)}
   .progress-track{flex:1;height:18px;background:rgba(255,255,255,0.03);border-radius:12px;overflow:hidden}
-  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#ffd9b8);transition:width 0.4s linear}
-  .time-end{width:80px;text-align:right;font-weight:700;color:#ffd9b8}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#48d07b,#ffb86b);transition:width 0.4s linear}
+  .time-end{width:80px;text-align:right;font-weight:700;color:var(--accent-2)}
   .block-info{color:var(--muted);font-size:13px}
 
   /* departures */
   .departures{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow:auto;padding-right:6px}
-  .stop-block{padding:10px;border-radius:10px;background:rgba(255,255,255,0.015)}
-  .stop-name{font-weight:700;color:#ffdcbc;margin-bottom:6px}
-  .dep-row{display:flex;justify-content:space-between;align-items:center;padding:6px;border-radius:8px;background:rgba(255,255,255,0.01)}
+  .stop-block{padding:12px;border-radius:10px;background:rgba(255,255,255,0.012)}
+  .stop-name{font-weight:700;color:var(--accent-2);margin-bottom:8px}
+  .dep-row{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
   .dep-left{font-weight:700}
-  .dep-time{color:#ffd9b8;font-weight:800}
+  .dep-time{color:var(--accent-2);font-weight:800}
+  .small-meta{font-size:12px;color:var(--muted)}
 
   /* weather */
   .weather-day{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
@@ -77,13 +79,14 @@
 
   /* lunch */
   #obed{overflow:auto;max-height:360px;padding-right:6px}
+  .meal{padding:8px 10px;border-radius:10px;margin-bottom:8px;background:linear-gradient(90deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02)}
 
   /* news */
   .news-item{display:flex;gap:10px;align-items:flex-start;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
 
   /* ticker */
   .ticker{grid-column:1/-1;height:44px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;overflow:hidden;padding:6px 12px;border:1px solid rgba(255,255,255,0.03)}
-  .marquee{white-space:nowrap;display:inline-block; transform:translate3d(0,0,0); animation:marq 20s linear infinite}
+  .marquee{white-space:nowrap;display:inline-block; transform:translate3d(0,0,0); animation:marq 22s linear infinite}
   @keyframes marq{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 
   .live-clock-badge{position:fixed;right:24px;bottom:24px;background:var(--accent);color:#081018;padding:10px 14px;border-radius:12px;font-weight:800;box-shadow:0 12px 36px rgba(0,0,0,0.6);z-index:40}
@@ -91,6 +94,7 @@
   @media (max-width:1200px){
     .board{grid-template-columns:1fr;grid-template-rows:auto 1fr 1fr 1fr;overflow:auto}
     .left-top,.left-bottom,.center-top,.center-bottom,.right-top,.right-bottom{grid-column:1}
+    #clock-time{font-size:40px}
   }
 </style>
 </head>
@@ -157,7 +161,7 @@
       <div class="card">
         <div class="card-header"><div class="icon"><i class="fa-solid fa-bus"></i></div><h3>Odjezdy PID — vybrané zastávky</h3></div>
         <div id="departures" class="departures">
-          <!-- dynamic content -->
+          <div class="small-meta">Načítám odjezdy...</div>
         </div>
         <div class="meta" id="pid-note">Načítám odjezdy...</div>
       </div>
@@ -180,7 +184,7 @@
     <div class="center-bottom">
       <div class="card" style="min-height:200px">
         <div class="card-header"><div class="icon"><i class="fa-solid fa-list"></i></div><h3>Rozvrh (rychle)</h3></div>
-        <div class="meta">Nultá 07:00–07:45 • 1. 08:00–08:45 • 2. 08:55–09:40 • 3. 10:00–10:45 ...</div>
+        <div class="meta">Nultá 07:00–07:45 • 1. 08:00–08:45 • 2. 08:55–09:40 • 3. 10:00–10:45 • ...</div>
       </div>
     </div>
 
@@ -206,7 +210,7 @@
    CONFIG
    ===================== */
 const REFRESH_MIN = 15; // minutes for lunch/weather
-// PID token you provided (user wanted it embedded)
+// PID token (user-provided). If you want to change, replace here.
 const PID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjg1NTE1LCJleHAiOjExNzYxMjg1NTE1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiYzNmYWY5MGMtMGEyMi00OWE1LWI1MDktM2NiM2YwN2NiOGU0In0.ugD7g2PQ_aLZX3Hhke3rnbxFWcmn_d_5_4BXcRH9qpw';
 const PID_BASE = 'https://api.golemio.cz/pid/input-gateway/v1';
 const LUNCH_URL = 'https://zsbrezovehory.cz/jidelni-listek/';
@@ -287,6 +291,9 @@ function updateClock(){
     const done = now - cur.start;
     const pct = Math.max(0,Math.min(100, Math.round(done/total*100)));
     fill.style.width = pct + '%';
+    // color transition green->red by pct
+    fill.style.background = `linear-gradient(90deg, hsl(${120 - Math.round(pct*1.2)}, 70%, 50%), ${getComputedStyle(document.documentElement).getPropertyValue('--accent-2')})`;
+
     const minsLeft = Math.max(0, Math.ceil((cur.end - now)/60000));
     const hh = Math.floor(minsLeft/60);
     const mm = minsLeft % 60;
@@ -305,7 +312,7 @@ function updateClock(){
    Weather (Open-Meteo)
    ===================== */
 async function fetchWeather(){
-  const lat = 49.6895, lon = 14.0106;
+  const lat = 49.6895, lon = 14.0106; // Příbram approx
   try{
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe/Prague`;
     const r = await fetch(url);
@@ -313,14 +320,16 @@ async function fetchWeather(){
     const j = await r.json();
     if(j && j.current_weather){
       const cur = j.current_weather;
-      document.getElementById('weather-now').textContent = `Aktuálně: ${cur.temperature} °C • ${mapWeather(cur.weathercode)}`;
+      document.getElementById('weather-now').innerHTML = `<div><b>Aktuálně:</b> ${cur.temperature} °C • ${mapWeather(cur.weathercode)}</div><div class="small-meta">Vítr ${cur.windspeed} km/h • ${cur.winddirection}°</div>`;
       const d = j.daily;
-      document.getElementById('weather-day1').textContent = `Zítra: max ${d.temperature_2m_max[1]} °C • min ${d.temperature_2m_min[1]} °C • ${mapWeather(d.weathercode[1])}`;
-      document.getElementById('weather-day2').textContent = `Pozítří: max ${d.temperature_2m_max[2]} °C • min ${d.temperature_2m_min[2]} °C • ${mapWeather(d.weathercode[2])}`;
+      // daily arrays start index 0 = today; so 1 tomorrow, 2 day after
+      document.getElementById('weather-day1').innerHTML = `<div><b>Zítra:</b> max ${d.temperature_2m_max[1]} °C • min ${d.temperature_2m_min[1]} °C • ${mapWeather(d.weathercode[1])}</div>`;
+      document.getElementById('weather-day2').innerHTML = `<div><b>Pozítří:</b> max ${d.temperature_2m_max[2]} °C • min ${d.temperature_2m_min[2]} °C • ${mapWeather(d.weathercode[2])}</div>`;
     } else {
       document.getElementById('weather-now').textContent = 'Počasí: nedostupné';
     }
   }catch(e){
+    console.warn('Weather error', e);
     document.getElementById('weather-now').textContent = 'Chyba při načítání počasí';
     document.getElementById('weather-day1').textContent = '—';
     document.getElementById('weather-day2').textContent = '—';
@@ -339,13 +348,13 @@ async function fetchLunch(){
   out.innerHTML = 'Načítám jídelníček...';
   try{
     const res = await fetch(LUNCH_PROXY + encodeURIComponent(LUNCH_URL), {cache:'no-store'});
-    if(!res.ok) throw new Error('proxy fail');
+    if(!res.ok) throw new Error('proxy fail '+res.status);
     const html = await res.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html,'text/html');
 
     // Try multiple selectors commonly used on WP themes
-    const selectors = ['.jeg-content-inner','article .entry-content','.entry-content','.post-content','.elementor-widget-container','main'];
+    const selectors = ['.jeg-content-inner','article .entry-content','.entry-content','.post-content','.elementor-widget-container','main','.wp-block-group'];
     let node = null;
     for(const s of selectors){
       const el = doc.querySelector(s);
@@ -367,10 +376,6 @@ async function fetchLunch(){
       items.forEach(li=>{
         const d = document.createElement('div');
         d.className = 'meal';
-        d.style.padding = '8px 10px';
-        d.style.borderRadius = '10px';
-        d.style.marginBottom = '8px';
-        d.style.background = 'linear-gradient(90deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01))';
         d.textContent = li.textContent.trim();
         out.appendChild(d);
       });
@@ -381,7 +386,7 @@ async function fetchLunch(){
     const ps = node.querySelectorAll('p');
     if(ps.length){
       out.innerHTML = '';
-      Array.from(ps).slice(0,10).forEach(p=>{
+      Array.from(ps).slice(0,8).forEach(p=>{
         const d = document.createElement('div'); d.className='meal'; d.textContent = p.textContent.trim(); out.appendChild(d);
       });
       return;
@@ -390,14 +395,15 @@ async function fetchLunch(){
     // last fallback: trimmed html text
     out.innerHTML = '<div class="meal">' + node.textContent.trim().slice(0,2000) + '…</div>';
   }catch(e){
+    console.warn('Lunch error', e);
     out.innerHTML = '<em>Nelze načíst jídelníček (proxy/CORS)</em>';
   }
 }
 
 /* =====================
    PID departures (Golemio) - best effort
-   - direct fetch with Bearer header (may be blocked by CORS)
-   - if blocked, UI shows clear instruction
+   - tries direct fetch with Bearer header (may be blocked by CORS)
+   - if blocked, UI shows clear instruction and sample Cloudflare Worker
    ===================== */
 const pidStops = [
   {stopAreaId:'52838', name:'Příbram, Březové Hory, Mariánská'},
@@ -409,7 +415,9 @@ async function fetchDepartures(){
   const container = document.getElementById('departures');
   const note = document.getElementById('pid-note');
   container.innerHTML = '';
-  note.textContent = 'Načítám odjezdy...';
+  note.textContent = 'Načítám odjezdy... (pokouší se přímé volání API)';
+  let anyError = false;
+
   for(const s of pidStops){
     const block = document.createElement('div'); block.className = 'stop-block';
     const title = document.createElement('div'); title.className='stop-name'; title.textContent = s.name;
@@ -422,44 +430,98 @@ async function fetchDepartures(){
       if(!r.ok) throw new Error('HTTP ' + r.status);
       const j = await r.json();
 
-      // try to find departures array in returned structure
-      let deps = j.departures || (j.data && j.data[0] && j.data[0].departures) || j.data;
-      if(!deps && Array.isArray(j)) deps = j;
-      if(!deps){ listWrap.textContent = 'Žádné odjezdy'; continue; }
+      // Normalize various shapes
+      let deps = null;
+      if(Array.isArray(j)) deps = j;
+      else if(j.departures) deps = j.departures;
+      else if(j.data && Array.isArray(j.data)) deps = j.data;
+      else if(j[0] && j[0].departures) deps = j[0].departures;
+      else deps = j.departures || j.data || null;
+
+      if(!deps || deps.length === 0){
+        listWrap.textContent = 'Žádné odjezdy (nebo prázdná odpověď)';
+        continue;
+      }
 
       listWrap.innerHTML = '';
       deps.slice(0,8).forEach(d=>{
-        // try multiple fields
-        const line = (d.line && (d.line.name || d.line)) || d.tripShortName || d.routeShortName || d.direction || d.headsign || d.lineName || d.lineRef || '—';
-        const dir = d.direction || d.headsign || d.destination || '';
-        // times
+        // robust extraction of line/time/delay/direction
+        const line = (d.line && (d.line.name || d.line)) || d.routeShortName || d.tripShortName || d.lineName || d.route || d.lineRef || '—';
+        const direction = d.direction || d.destination || d.headsign || (d.stop && d.stop.destination) || '';
         let timeText = '—';
-        if(d.timePlanned) timeText = (typeof d.timePlanned === 'string' && d.timePlanned.match(/\d{2}:\d{2}/)) ? d.timePlanned.match(/\d{2}:\d{2}/)[0] : String(d.timePlanned);
-        else if(d.time) timeText = String(d.time);
-        else if(d.expectedArrival) timeText = String(d.expectedArrival);
-
-        const delay = d.delay || d.timeDelta || d.expectedDelay || (d.estimatedDelay ? d.estimatedDelay : 0);
+        if(d.timePlanned) timeText = extractTime(d.timePlanned);
+        else if(d.time) timeText = extractTime(d.time);
+        else if(d.expectedArrival) timeText = extractTime(d.expectedArrival);
+        else if(d.plannedTime) timeText = extractTime(d.plannedTime);
+        // compute delay
+        let delay = null;
+        if(d.delay !== undefined) delay = d.delay;
+        else if(d.expectedDelay !== undefined) delay = d.expectedDelay;
+        else if(d.timeDelta !== undefined) delay = d.timeDelta;
+        else if(d.estimatedDelay !== undefined) delay = d.estimatedDelay;
+        else if(d.realtime && d.realtime.expectedDelay) delay = d.realtime.expectedDelay;
         const li = document.createElement('div'); li.className='dep-row';
-        const left = document.createElement('div'); left.className='dep-left'; left.textContent = `${line} → ${dir}`;
+        const left = document.createElement('div'); left.className='dep-left'; left.textContent = `${line} → ${direction}`;
         const right = document.createElement('div'); right.className='dep-time';
         right.textContent = timeText + (delay && Number(delay) !== 0 ? ` (+${delay} min)` : '');
         li.appendChild(left); li.appendChild(right); listWrap.appendChild(li);
       });
     }catch(err){
-      // Show useful error and instructions
-      listWrap.innerHTML = `<div style="color:#f6c6a8"><b>Chyba při načítání (API/CORS)</b><div class="meta">Pro spolehlivé načítání z prohlížeče je potřeba server-proxy. Doporučené řešení: Cloudflare Worker, který přepošle požadavek na Golemio a vrátí odpověď. Pokud chceš, pošlu hotový Worker kód.</div></div>`;
-      note.textContent = 'Chyba: API může blokovat požadavky z prohlížeče (CORS). Řešení: server-proxy (Cloudflare Worker).';
-      console.warn('PID fetch error for', s.stopAreaId, err);
+      console.warn('PID error for', s.stopAreaId, err);
+      anyError = true;
+      listWrap.innerHTML = `<div style="color:#f6c6a8"><b>Chyba při načítání (API/CORS)</b><div class="small-meta">Pro spolehlivé zobrazení z prohlížeče je potřeba server-proxy (Cloudflare Worker). Pokud chceš, níže je hotový Worker kód — vlož ho do svého účtu Cloudflare a změň TOKEN.</div></div>`;
     }
   }
+
+  if(anyError){
+    document.getElementById('pid-note').innerHTML = `Poznámka: API nebo CORS blokují přímé požadavky. <b>Řešení:</b> nasadit server-proxy (Cloudflare Worker). Níže je připravený worker — zkopíruj a nasad.`;
+    // show Worker snippet into pid-note for convenience
+    const workerSnippet = `
+/* Cloudflare Worker: přepošle požadavky na Golemio PID s tokenem */
+addEventListener('fetch', event => {
+  event.respondWith(handle(event.request));
+});
+const TOKEN = 'REPLACE_WITH_PID_TOKEN';
+const TARGET = 'https://api.golemio.cz/pid/input-gateway/v1';
+async function handle(req){
+  const url = new URL(req.url);
+  const path = url.searchParams.get('path') || '/departures';
+  const forwardUrl = TARGET + path + (url.search ? '&' + url.searchParams.toString() : '');
+  const r = await fetch(forwardUrl, { headers: { 'Authorization': 'Bearer ' + TOKEN }});
+  const txt = await r.text();
+  return new Response(txt, { status: r.status, headers: { 'content-type': r.headers.get('content-type') || 'application/json', 'Access-Control-Allow-Origin':'*'}});
 }
+    `;
+    // append it to note (escaped)
+    document.getElementById('pid-note').insertAdjacentHTML('beforeend', `<pre style="white-space:pre-wrap;margin-top:8px;background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;color:#ffd9b8;font-size:12px">${escapeHtml(workerSnippet)}</pre>`);
+  } else {
+    document.getElementById('pid-note').textContent = 'Odjezdy načteny.';
+  }
+}
+
+function extractTime(value){
+  // try to find HH:MM in string or format unix timestamp
+  if(!value) return '—';
+  if(typeof value === 'string'){
+    const m = value.match(/\d{2}:\d{2}/);
+    if(m) return m[0];
+    const nu = Date.parse(value);
+    if(!isNaN(nu)) { const d = new Date(nu); return pad2(d.getHours())+':'+pad2(d.getMinutes());}
+    return value;
+  } else if(typeof value === 'number'){
+    // assume unix ms or s
+    const d = value>1e12 ? new Date(value) : new Date(value*1000);
+    return pad2(d.getHours())+':'+pad2(d.getMinutes());
+  } else return String(value);
+}
+function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 /* =====================
    Ticker: ensure long enough text for smooth scroll
    ===================== */
 function initTicker(){
   const m = document.getElementById('marq');
-  if(m.textContent.length < 60){
+  if(m.textContent.length < 80){
     m.textContent = m.textContent + ' • ' + m.textContent + ' • ' + m.textContent;
   }
 }
@@ -478,7 +540,8 @@ refreshAll();
 setInterval(updateClock, 1000); // clock tick
 setInterval(fetchWeather, REFRESH_MIN * 60 * 1000);
 setInterval(fetchLunch, REFRESH_MIN * 60 * 1000);
-setInterval(fetchDepartures, 60 * 1000); // try every minute
+setInterval(fetchDepartures, 60 * 1000); // try every minute (Golemio updates frequently)
+
 </script>
 </body>
 </html>
