@@ -1,233 +1,505 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Informační tabule — ZŠ Březové Hory</title>
+
+<!-- Fonts + icons -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 <style>
-:root{
---bg1:#08272d;
---bg2:#0e3b46;
---accent:#ff8a3d;
---glass: rgba(255,255,255,0.04);
---card:#0b2530;
---muted:#9fb0bd;
---radius:18px;
---gap:18px;
---progress-bg:#1c4a56;
---progress-fill:#ff8a3d;
---ticker-bg:#072f3c;
---ticker-color:#ffd9b8;
-}
-*{box-sizing:border-box;}
-html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#eaf2f5;display:flex;justify-content:center;align-items:center;padding:10px;}
-.board{width:100%;height:100%;max-width:2200px;max-height:1300px;display:grid;grid-template-columns:1.5fr 1.5fr 1fr;grid-template-rows:1fr 1fr;gap:var(--gap);align-items:stretch;padding:22px;border-radius:26px;background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 20px 60px rgba(1,8,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);overflow:hidden;}
-.topbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 16px;}
-.title{display:flex;align-items:center;gap:14px;}
-.logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#00b3a6,#045a63);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;color:white;box-shadow:0 6px 18px rgba(0,0,0,0.5);}
-.school-name{font-size:28px;font-weight:700;letter-spacing:0.6px;color:#ffefdc;text-shadow:0 3px 20px rgba(0,0,0,0.4);}
-.meta{color:var(--muted);font-size:13px;}
-.card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius: var(--radius);padding:18px;box-shadow: 0 10px 40px rgba(1,8,12,0.5);border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;gap:10px;min-height:120px;}
-.card-header{display:flex;align-items:center;gap:12px;}
-.card-header .icon{font-size:28px;color:var(--accent);text-shadow:0 0 14px rgba(255,138,61,0.15);}
-.card-header h3{margin:0;font-size:18px;color:#ffdcbc;}
-.left-top{grid-column:1/2;grid-row:1/2;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);}
-.left-bottom{grid-column:1/2;grid-row:2/3;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);}
-.center-top{grid-column:2/3;grid-row:1/2;display:grid;grid-template-rows:1fr 1fr;gap:var(--gap);}
-.center-bottom{grid-column:2/3;grid-row:2/3;display:flex;flex-direction:column;gap:var(--gap);}
-.right-all{grid-column:3/4;grid-row:1/3;display:flex;flex-direction:column;gap:var(--gap);}
-#clock-time{font-size:48px;font-weight:700;color:#fff; letter-spacing:1px; text-shadow:0 6px 18px rgba(0,0,0,0.45);}
-#clock-date,#clock-hour,#clock-svatek{color:var(--muted);font-size:16px;}
-.progress-bar{width:100%;height:18px;background:var(--progress-bg);border-radius:9px;overflow:hidden;margin-top:8px;}
-.progress-fill{height:100%;background:var(--progress-fill);width:0%;transition:width 0.5s ease;}
-.weather-box{display:flex;flex-direction:column;gap:6px;}
-.weather-day{display:flex;justify-content:space-between;align-items:center;}
-.weather-day span{font-size:16px;}
-.departures{display:flex;flex-direction:column;gap:6px;font-family:'Roboto Condensed',sans-serif;max-height:300px;overflow-y:auto;}
-.dep-row{display:flex;justify-content:space-between;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);font-size:14px;}
-.dep-time{font-weight:700;color:#ffd9b8;}
-.news{display:flex;flex-direction:column;gap:8px;overflow:auto;}
-.news-item{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,0.01);padding:8px;border-radius:12px;}
-.news-thumb{width:120px;height:80px;background:#072a2d;background-size:cover;background-position:center;border-radius:8px;}
-.news-txt{flex:1;}
-#obed{font-size:1rem;line-height:1.6;color:#eaf2f5;overflow:auto;padding-right:6px;}
-#obed h4{margin:0 0 8px 0;color:#ffd9b8;}
-.ticker{grid-column:1/-1;height:38px;border-radius:10px;background:var(--ticker-bg);display:flex;align-items:center;overflow:hidden;padding:6px 12px;border:1px solid rgba(255,255,255,0.03);}
-.ticker .marquee{white-space:nowrap;display:inline-block;transform:translate3d(100%,0,0);animation:marq 22s linear infinite;}
-@keyframes marq{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}} 
-.live-clock-badge{position:fixed;left:28px;bottom:28px;background:var(--accent);color:#081018;padding:10px 14px;border-radius:10px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:40;}
-@media(max-width:1600px){.board{grid-template-columns:1fr;grid-template-rows:auto 1fr 1fr;align-items:start;}.left-top,.left-bottom,.center-top,.center-bottom{grid-column:1;}.right-all{grid-column:1;}.live-clock-badge{left:14px;bottom:14px;font-size:14px;}}
+  :root{
+    --bg1:#08272d; --bg2:#0e3b46; --accent:#ff8a3d; --muted:#9fb0bd;
+    --card:#0b2530; --glass: rgba(255,255,255,0.04);
+    --radius:18px; --gap:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#eaf2f5}
+  body{display:flex;align-items:center;justify-content:center;padding:20px}
+  /* board layout - wide and clear */
+  .board{
+    width:100%;max-width:2200px;height:95vh;
+    display:grid;
+    grid-template-columns: 1.8fr 1fr 1fr; /* left big, two right columns */
+    grid-template-rows: auto 1fr;
+    gap:var(--gap);
+    padding:22px;border-radius:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+
+  .topbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:8px 16px}
+  .title{display:flex;gap:14px;align-items:center}
+  .logo{width:78px;height:78px;border-radius:12px;background:linear-gradient(135deg,#00b3a6,#045a63);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:34px;color:#fff;box-shadow:0 8px 26px rgba(0,0,0,0.5)}
+  .school-name{font-size:28px;font-weight:700;color:#ffefdc;letter-spacing:0.6px}
+  .meta{color:var(--muted);font-size:13px}
+
+  /* Cards */
+  .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 28px rgba(0,0,0,0.45);display:flex;flex-direction:column;gap:12px}
+  .card-header{display:flex;gap:12px;align-items:center}
+  .card-header .icon{font-size:28px;color:var(--accent)}
+  .card-header h3{margin:0;color:#ffdcbc;font-size:18px}
+
+  /* big left column area */
+  .left-top{grid-column:1/2;grid-row:1/2;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+  .left-bottom{grid-column:1/2;grid-row:2/3;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+
+  /* mid and right columns */
+  .center-top{grid-column:2/3;grid-row:1/2;display:flex;flex-direction:column;gap:var(--gap)}
+  .right-top{grid-column:3/4;grid-row:1/2;display:flex;flex-direction:column;gap:var(--gap)}
+  .center-bottom{grid-column:2/3;grid-row:2/3;display:flex;flex-direction:column;gap:var(--gap)}
+  .right-bottom{grid-column:3/4;grid-row:2/3;display:flex;flex-direction:column;gap:var(--gap)}
+
+  /* clock area specifics */
+  .clock-large{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  #clock-time{font-size:56px;font-weight:800;letter-spacing:1px}
+  #clock-date{color:var(--muted);font-size:15px}
+
+  /* progress box (separate card) */
+  .progress-box{display:flex;flex-direction:column;gap:8px;width:100%}
+  .progress-row{display:flex;align-items:center;gap:12px;width:100%}
+  .time-left{font-weight:700;color:#ffd9b8;width:110px}
+  .time-end{font-weight:700;color:#ffd9b8;width:80px;text-align:right}
+  .progress-track{flex:1;height:18px;background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#ffd9b8);width:0%;transition:width 0.5s linear}
+
+  /* departures */
+  .departures{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto;padding-right:6px}
+  .stop-block{background:rgba(255,255,255,0.015);padding:8px;border-radius:10px}
+  .stop-name{font-weight:700;color:#ffdcbc;margin-bottom:6px}
+  .dep-row{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.01);align-items:center}
+  .dep-left{font-weight:700}
+  .dep-time{color:#ffd9b8;font-weight:800}
+
+  /* weather block */
+  .weather-grid{display:flex;flex-direction:column;gap:8px}
+  .weather-day{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.01)}
+
+  /* lunch list */
+  #obed{overflow:auto;max-height:360px;padding-right:6px}
+
+  /* news */
+  .news-item{display:flex;gap:10px;align-items:flex-start;padding:8px;border-radius:10px;background:rgba(255,255,255,0.01)}
+
+  /* ticker bottom */
+  .ticker{grid-column:1/-1;height:46px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;overflow:hidden;padding:6px 12px;border:1px solid rgba(255,255,255,0.03)}
+  .marquee{white-space:nowrap;display:inline-block;padding-left:100%;animation:marq 24s linear infinite}
+  @keyframes marq{0%{transform:translateX(0%)}100%{transform:translateX(-100%)}}
+
+  /* small right bottom badge */
+  .live-clock-badge{position:fixed;right:28px;bottom:28px;background:var(--accent);color:#081018;padding:10px 14px;border-radius:10px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:40}
+
+  /* responsivity */
+  @media (max-width:1200px){
+    .board{grid-template-columns:1fr;grid-template-rows:auto 1fr 1fr 1fr;overflow:auto}
+    .left-top,.left-bottom,.center-top,.center-bottom,.right-top,.right-bottom{grid-column:1}
+  }
 </style>
 </head>
 <body>
-<div class="board" id="board">
-  <div class="topbar">
-    <div class="title">
-      <div class="logo">Š</div>
-      <div>
-        <div class="school-name">ZŠ Březové Hory</div>
-        <div class="meta" id="meta-status">Aktualizováno: —</div>
-      </div>
-    </div>
-    <div class="meta">Napájení: online • Režim: veřejná tabule</div>
-  </div>
+  <div class="board">
 
-  <div class="left-top">
-    <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-regular fa-clock"></i></div><div><h3>Čas & Hodina</h3><div class="meta">Přesnost: systémová</div></div></div>
-      <div class="clock-box">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="title">
+        <div class="logo">Š</div>
+        <div>
+          <div class="school-name">ZŠ Březové Hory</div>
+          <div class="meta" id="meta-status">Aktualizováno: —</div>
+        </div>
+      </div>
+      <div class="meta">Napájení: online • Režim: veřejná tabule</div>
+    </div>
+
+    <!-- LEFT TOP: Clock big + hour progress -->
+    <div class="left-top">
+      <div class="card clock-large">
+        <div class="card-header"><div class="icon"><i class="fa-regular fa-clock"></i></div><h3>Čas & Datum</h3></div>
         <div id="clock-time">--:--:--</div>
         <div id="clock-date">—</div>
-        <div id="clock-hour">Hodina: —</div>
-        <div id="clock-svatek">Svátek: —</div>
-        <div class="progress-bar"><div class="progress-fill" id="hour-progress"></div></div>
+        <div id="current-holiday" class="meta">Svátek: —</div>
+      </div>
+
+      <div class="card progress-box">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-hourglass-half"></i></div><h3>Aktuální hodina / přestávka</h3></div>
+        <div class="progress-row">
+          <div class="time-left" id="time-left">--:--</div>
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="time-end" id="time-end">--:--</div>
+        </div>
+        <div class="meta" id="current-block-info">—</div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-bus"></i></div><div><h3>Odjezdy PID</h3><div class="meta">Autobusy</div></div></div>
-      <div class="departures" id="departures">Načítám odjezdy...</div>
-    </div>
-  </div>
+    <!-- CENTER: Weather + Plan -->
+    <div class="center-top">
+      <div class="card">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-cloud-sun"></i></div><h3>Počasí (Příbram)</h3></div>
+        <div class="weather-grid" id="weather-box">
+          <div class="weather-day" id="weather-now">Načítám aktuální počasí...</div>
+          <div class="weather-day" id="weather-day1">Načítám zítra...</div>
+          <div class="weather-day" id="weather-day2">Načítám pozítří...</div>
+        </div>
+      </div>
 
-  <div class="center-top">
-    <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-cloud-sun"></i></div><div><h3>Počasí</h3><div class="meta">Open-Meteo</div></div></div>
-      <div class="weather-box" id="weather-box">Načítám počasí...</div>
+      <div class="card">
+        <div class="card-header"><div class="icon"><i class="fa-regular fa-calendar-days"></i></div><h3>Plán akcí</h3></div>
+        <div id="plan" class="meta">03.11. Exkurze do Planetária • 11.11. Den otevřených dveří • 20.12. Vánoční koncert</div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-header"><div class="icon"><i class="fa-regular fa-calendar-days"></i></div><div><h3>Plán akcí</h3><div class="meta">Nejbližší události</div></div></div>
-      <div id="plan-akci">Načítám akce...</div>
-    </div>
-  </div>
 
-  <div class="center-bottom">
-    <div class="card" style="min-height:260px">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-utensils"></i></div><div><h3>Dnešní oběd</h3><div class="meta">Zdroj: zsbrezovehory.cz</div></div></div>
-      <div id="obed"><em>Načítám jídelníček...</em></div>
-    </div>
-  </div>
+    <!-- RIGHT TOP: News + Departures -->
+    <div class="right-top">
+      <div class="card" style="min-height:260px">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-newspaper"></i></div><h3>Novinky</h3></div>
+        <div id="news">
+          <div class="news-item"><div style="width:110px;height:70px;background:#072a2d;border-radius:8px"></div><div><b>Středoškolský atletický pohár</b><div class="meta">Školní družstvo — skvělé výsledky.</div></div></div>
+          <div class="news-item"><div style="width:110px;height:70px;background:#072a2d;border-radius:8px"></div><div><b>Nové lavice v 7.A</b><div class="meta">Instalace proběhla o víkendu.</div></div></div>
+        </div>
+      </div>
 
-  <div class="right-all">
-    <div class="card" style="flex:1 1 auto;">
-      <div class="card-header"><div class="icon"><i class="fa-solid fa-newspaper"></i></div><div><h3>Novinky</h3><div class="meta">Školní aktuality</div></div></div>
-      <div class="news" id="news">Načítám...</div>
+      <div class="card">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-bus"></i></div><h3>Odjezdy PID — vybrané zastávky</h3></div>
+        <div class="departures" id="departures">
+          <!-- dynamic -->
+        </div>
+        <div class="meta">Poznámka: pokud API vrací chybu CORS, nasaď server-proxy (Cloudflare Worker).</div>
+      </div>
     </div>
-  </div>
 
-  <div class="ticker" id="ticker"><div class="marquee" id="marq">Ve čtvrtek 30. října se budou od 9:40 rozdávat tradiční anglické certifikáty ve velké tělocvičně.</div></div>
-  <div class="live-clock-badge" id="top-right-time">--:--</div>
-</div>
+    <!-- LEFT BOTTOM: Lunch + extra -->
+    <div class="left-bottom">
+      <div class="card" style="min-height:320px">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-utensils"></i></div><h3>Dnešní oběd</h3></div>
+        <div id="obed">Načítám jídelníček...</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-info-circle"></i></div><h3>Rychlé info</h3></div>
+        <div class="meta">Přihlášky na lyžák do 30.11. • Kroužek robotiky od 1.11.</div>
+      </div>
+    </div>
+
+    <!-- CENTER BOTTOM: reserved / big card (could be timetable or map) -->
+    <div class="center-bottom">
+      <div class="card" style="min-height:200px">
+        <div class="card-header"><div class="icon"><i class="fa-solid fa-list"></i></div><h3>Rozvrh (rychle)</h3></div>
+        <div class="meta">Zde lze doplnit kompletní rozvrh, nebo interaktivní rozpis vyučovacích hodin.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT BOTTOM: spare small card -->
+    <div class="right-bottom">
+      <div class="card" style="height:170px">
+        <div class="card-header"><div class="icon"><i class="fa-regular fa-clock"></i></div><h3>Rychlý čas</h3></div>
+        <div id="small-clock" style="font-size:28px;font-weight:700">--:--</div>
+        <div class="meta">Aktualizace každou vteřinu</div>
+      </div>
+    </div>
+
+    <!-- bottom ticker -->
+    <div class="ticker">
+      <div class="marquee" id="marq">Sledujte web školy pro aktuální informace • Přihlášky na lyžařský výcvik do 30.11. • Den otevřených dveří — 11.11.</div>
+    </div>
+
+    <div class="live-clock-badge" id="live-badge">--:--</div>
+  </div>
 
 <script>
-const PID_API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjg1NTE1LCJleHAiOjExNzYxMjg1NTE1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiYzNmYWY5MGMtMGEyMi00OWE1LWI1MDktM2NiM2YwN2NiOGU0In0.ugD7g2PQ_aLZX3Hhke3rnbxFWcmn_d_5_4BXcRH9qpw';
+/* ===========================
+   CONFIG / API KEYS
+   ===========================
+   - PID (Golemio) token: pokud je CORS blok, použij server proxy.
+   - Proxy used for school menu scraping: allorigins.win
+*/
+const REFRESH_MIN = 15;
+const PID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDA2NSwiaWF0IjoxNzYxMjg1NTE1LCJleHAiOjExNzYxMjg1NTE1LCJpc3MiOiJnb2xlbWlvIiwianRpIjoiYzNmYWY5MGMtMGEyMi00OWE1LWI1MDktM2NiM2YwN2NiOGU0In0.ugD7g2PQ_aLZX3Hhke3rnbxFWcmn_d_5_4BXcRH9qpw';
+const PID_BASE = 'https://api.golemio.cz/pid/input-gateway/v1'; // Golemio endpoint
+const LUNCH_URL = 'https://zsbrezovehory.cz/jidelni-listek/';
+const LUNCH_PROXY = 'https://api.allorigins.win/raw?url=';
 
-// --- Hodiny ---
-function updateClock(){
-  const d=new Date();
-  const hour=d.getHours();
-  document.getElementById('clock-time').textContent=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  document.getElementById('clock-date').textContent=d.toLocaleDateString('cs-CZ',{weekday:'long', year:'numeric', month:'long', day:'numeric'});
-  document.getElementById('clock-hour').textContent='Hodina: '+(hour+1);
-  const svatekList={'10-24':'František'};
-  const key=(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
-  document.getElementById('clock-svatek').textContent='Svátek: '+(svatekList[key]||'—');
-  document.getElementById('hour-progress').style.width=(hour/24*100)+'%';
-  document.getElementById('top-right-time').textContent=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
-}
+/* ===========================
+   Utility
+   =========================== */
+function pad2(n){ return n.toString().padStart(2,'0'); }
+function setMetaStatus(t){ document.getElementById('meta-status').textContent = 'Aktualizováno: ' + t; }
 
-// --- Odjezdy PID ---
-async function fetchPID(){
-  const stops=[
-    {id:'52838',name:'Příbram, Březové Hory, Mariánská'},
-    {id:'9739/1',name:'Příbram, Březové Hory, náměstí (platforma A)'},
-    {id:'1409175511863_MAI00278',name:'Příbram, Březové Hory, domov seniorů'}
-  ];
-  const container=document.getElementById('departures');
-  container.innerHTML='';
-  for(const s of stops){
-    const div=document.createElement('div');
-    div.className='dep-row';
-    const name=document.createElement('span'); name.textContent=s.name;
-    const time=document.createElement('span'); time.textContent='Načítám...';
-    div.appendChild(name); div.appendChild(time); container.appendChild(div);
-    try{
-      const res=await fetch(`https://api.golemio.cz/pid/input-gateway/v1/departures?stopAreaId=${encodeURIComponent(s.id)}&maxNo=6`,{
-        headers:{Authorization:'Bearer '+PID_API_KEY}
-      });
-      const data=await res.json();
-      if(data.data && data.data[0] && data.data[0].departures){
-        const depList=data.data[0].departures.map(d=>`${d.line} → ${d.time}${d.delay?` (${d.delay} min)`:''}`);
-        time.textContent=depList.join(' | ')||'—';
-      }else{time.textContent='—';}
-    }catch(err){time.textContent='Chyba';}
-  }
-}
-
-// --- Počasí ---
-async function fetchWeather(){
-  const lat=49.689; // Příbram
-  const lon=14.010;
-  const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=Europe/Prague`);
-  const data=await res.json();
-  const box=document.getElementById('weather-box');
-  box.innerHTML='';
-  // Aktuální
-  const cur=document.createElement('div'); cur.className='weather-day';
-  cur.innerHTML=`<span>Teď: ${data.current_weather.temperature}°C</span><span>${data.current_weather.weathercode}</span>`;
-  box.appendChild(cur);
-  // Předpověď
-  for(let i=0;i<2;i++){
-    const day=document.createElement('div'); day.className='weather-day';
-    day.innerHTML=`<span>${data.daily.time[i]}</span><span>${data.daily.temperature_2m_min[i]}°C / ${data.daily.temperature_2m_max[i]}°C</span>`;
-    box.appendChild(day);
-  }
-}
-
-// --- Jídelníček ---
-async function fetchObed(){
-  const obed=document.getElementById('obed');
-  // simulace, pokud není API
-  obed.innerHTML=`<h4>Pondělí</h4>Kuřecí řízek, brambory, salát<br>
-  <h4>Úterý</h4>Vepřová pečeně, knedlík, zelí<br>
-  <h4>Středa</h4>Špagety Boloňská<br>
-  <h4>Čtvrtek</h4>Losos pečený, brambory, zelenina<br>
-  <h4>Pátek</h4>Fazolová polévka, chléb`;
-}
-
-// --- Novinky ---
-const newsItems=[
-{title:'První školní den po prázdninách','thumb':'','desc':'Žáci se setkali po dlouhé pauze...'},
-{title:'Projekt Environmentální dny','thumb':'','desc':'Škola organizuje soutěže a workshopy pro žáky.'},
-{title:'Lyžařský výcvik','thumb':'','desc':'Lyžařský kurz pro 7. ročník se uskuteční v únoru.'}
+/* ===========================
+   SCHEDULE (hodiny / přestávky)
+   explicitně podle zadání
+   =========================== */
+const schedule = [
+  {start:'07:00', end:'07:45', label:'Nultá hodina', type:'lesson'},
+  {start:'07:45', end:'08:00', label:'Přestávka', type:'break'},
+  {start:'08:00', end:'08:45', label:'1. hodina', type:'lesson'},
+  {start:'08:45', end:'08:55', label:'Přestávka', type:'break'},
+  {start:'08:55', end:'09:40', label:'2. hodina', type:'lesson'},
+  {start:'09:40', end:'10:00', label:'Velká přestávka', type:'break'},
+  {start:'10:00', end:'10:45', label:'3. hodina', type:'lesson'},
+  {start:'10:45', end:'10:55', label:'Přestávka', type:'break'},
+  {start:'10:55', end:'11:40', label:'4. hodina', type:'lesson'},
+  {start:'11:40', end:'11:50', label:'Přestávka', type:'break'},
+  {start:'11:50', end:'12:35', label:'5. hodina', type:'lesson'},
+  {start:'12:35', end:'12:45', label:'Přestávka', type:'break'},
+  {start:'12:45', end:'13:30', label:'6. hodina', type:'lesson'},
+  {start:'13:30', end:'13:40', label:'Přestávka', type:'break'},
+  {start:'13:40', end:'14:25', label:'7. hodina', type:'lesson'},
+  {start:'14:25', end:'14:35', label:'Přestávka', type:'break'},
+  {start:'14:35', end:'15:20', label:'8. hodina', type:'lesson'},
+  {start:'15:20', end:'15:30', label:'Přestávka', type:'break'},
+  {start:'15:30', end:'16:15', label:'9. hodina', type:'lesson'}
 ];
-function updateNews(){
-  const n=document.getElementById('news'); n.innerHTML='';
-  newsItems.forEach(it=>{
-    const div=document.createElement('div');
-    div.className='news-item';
-    div.innerHTML=`<div class="news-thumb" style="background-image:url(${it.thumb||'https://via.placeholder.com/120x80?text=News'})"></div>
-    <div class="news-txt"><b>${it.title}</b><p>${it.desc}</p></div>`;
-    n.appendChild(div);
-  });
+
+function parseHM(hm){ const [h,m]=hm.split(':').map(Number); return {h,m}; }
+function makeDateToday(hm){ const now=new Date(); const {h,m}=parseHM(hm); return new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0); }
+
+function findCurrentBlock(now=new Date()){
+  for(const b of schedule){
+    const s = makeDateToday(b.start);
+    const e = makeDateToday(b.end);
+    if(now >= s && now < e) return {block:b, start:s, end:e};
+  }
+  return null;
 }
 
-// --- Init ---
-async function init(){
-  updateClock();
-  await fetchPID();
-  await fetchWeather();
-  await fetchObed();
-  updateNews();
-  setInterval(updateClock,1000);
-  setInterval(fetchPID,30000);
-  setInterval(fetchWeather,3600000);
+/* Update clock and progressbar */
+function updateClockAndProgress(){
+  const now = new Date();
+  // clock
+  document.getElementById('clock-time').textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
+  document.getElementById('clock-date').textContent = now.toLocaleDateString('cs-CZ',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  document.getElementById('small-clock').textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+
+  // svátky - použijeme API Abalin (CORS friendly)
+  fetch(`https://api.abalin.net/v1/namedays?country=cz&day=${now.getDate()}&month=${now.getMonth()+1}`)
+    .then(r=>r.json())
+    .then(j=>{
+      if(j && j.data && j.data.nameday && j.data.nameday.cz){
+        document.getElementById('current-holiday').textContent = 'Svátek: ' + j.data.nameday.cz;
+      } else {
+        document.getElementById('current-holiday').textContent = 'Svátek: –';
+      }
+    }).catch(()=>{ document.getElementById('current-holiday').textContent = 'Svátek: –'; });
+
+  // progress block
+  const cur = findCurrentBlock(now);
+  const fillEl = document.getElementById('progress-fill');
+  const leftEl = document.getElementById('time-left');
+  const endEl = document.getElementById('time-end');
+  const infoEl = document.getElementById('current-block-info');
+
+  if(cur){
+    const total = cur.end - cur.start;
+    const done = now - cur.start;
+    const pct = Math.max(0, Math.min(100, Math.round(done/total*100)));
+    fillEl.style.width = pct + '%';
+
+    const minsLeft = Math.max(0, Math.ceil((cur.end - now)/60000));
+    const mm = minsLeft % 60; const hh = Math.floor(minsLeft/60);
+    leftEl.textContent = (hh>0? hh+'h ':'') + mm + 'm';
+
+    endEl.textContent = `${pad2(cur.end.getHours())}:${pad2(cur.end.getMinutes())}`;
+    infoEl.textContent = `${cur.block.label} • ${cur.block.type === 'lesson' ? 'výuka' : 'přestávka'}`;
+  } else {
+    fillEl.style.width = '0%';
+    leftEl.textContent = '--';
+    endEl.textContent = '--:--';
+    infoEl.textContent = 'Momentálně mimo rozvrh';
+  }
+
+  // bottom badge + meta time
+  document.getElementById('live-badge').textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  setMetaStatus(`${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
 }
-init();
+
+/* ===========================
+   Weather (Open-Meteo)
+   =========================== */
+async function fetchWeather(){
+  const lat = 49.6895, lon = 14.0106; // Příbram approx.
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe/Prague`;
+    const res = await fetch(url);
+    const j = await res.json();
+    if(j && j.current_weather){
+      const cur = j.current_weather;
+      document.getElementById('weather-now').textContent = `Aktuálně: ${cur.temperature} °C • ${mapWeatherCode(cur.weathercode)}`;
+      const d1 = j.daily;
+      // daily arrays: index 0 = today, 1 = tomorrow, 2 = day after
+      document.getElementById('weather-day1').textContent = `Zítra: max ${d1.temperature_2m_max[1]} °C • min ${d1.temperature_2m_min[1]} °C • ${mapWeatherCode(d1.weathercode[1])}`;
+      document.getElementById('weather-day2').textContent = `Pozítří: max ${d1.temperature_2m_max[2]} °C • min ${d1.temperature_2m_min[2]} °C • ${mapWeatherCode(d1.weathercode[2])}`;
+    } else {
+      document.getElementById('weather-now').textContent = 'Počasí: nedostupné';
+    }
+  }catch(e){
+    document.getElementById('weather-now').textContent = 'Chyba při načtení počasí';
+    document.getElementById('weather-day1').textContent = '—';
+    document.getElementById('weather-day2').textContent = '—';
+  }
+}
+function mapWeatherCode(code){
+  // simplified mapping
+  const m = {
+    0:'Jasno', 1:'Polojasno',2:'Oblačno',3:'Zataženo',
+    45:'Mlha',48:'Mrznoucí mlha',51:'Slabé mrholení',61:'Déšť',
+    71:'Sníh',95:'Bouřka'
+  };
+  return m[code]||'Neurčeno';
+}
+
+/* ===========================
+   Lunch (scrape school page via public proxy)
+   =========================== */
+async function fetchLunch(){
+  const target = LUNCH_PROXY + encodeURIComponent(LUNCH_URL);
+  const out = document.getElementById('obed');
+  out.innerHTML = 'Načítám jídelníček...';
+  try{
+    const res = await fetch(target, {cache:'no-store'});
+    if(!res.ok) throw new Error('proxy failed');
+    const html = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // try multiple selectors common for WP sites
+    const selectors = ['.entry-content','.post-content','article','main','.elementor-widget-container','.jeg-content-inner'];
+    let node = null;
+    for(const s of selectors){
+      const el = doc.querySelector(s);
+      if(el && el.innerText.trim().length>50){ node = el; break; }
+    }
+    let snippet = node ? node.innerHTML : doc.body.innerHTML;
+    // Basic sanitize: remove scripts + images + forms
+    snippet = snippet.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<img[^>]*>/gi,'');
+    // pick only lists or paragraphs
+    // if very long, try to find first <ul> or first few <p>
+    const tmp = parser.parseFromString(snippet,'text/html');
+    const ul = tmp.querySelector('ul');
+    if(ul){
+      out.innerHTML = '';
+      // take list items but limit to 20
+      const lis = Array.from(ul.querySelectorAll('li')).slice(0,20);
+      lis.forEach(li=>{
+        const d = document.createElement('div'); d.className='meal'; d.textContent = li.textContent.trim(); out.appendChild(d);
+      });
+      return;
+    }
+    // else fallback: collect paragraphs
+    const ps = tmp.querySelectorAll('p');
+    if(ps.length>0){
+      out.innerHTML = '';
+      Array.from(ps).slice(0,10).forEach(p=>{
+        const d = document.createElement('div'); d.className='meal'; d.textContent = p.textContent.trim(); out.appendChild(d);
+      });
+      return;
+    }
+
+    // last resort: dump trimmed text up to 1500 chars
+    out.innerHTML = '<div class="meal">'+ (snippet.replace(/<[^>]+>/g,'').trim().slice(0,1500)) + '…</div>';
+  }catch(e){
+    out.innerHTML = '<em>Nelze načíst jídelníček (proxy/CORS)</em>';
+  }
+}
+
+/* ===========================
+   PID departures (Golemio)
+   - best-effort direct fetch (may be blocked by CORS)
+   - if blocked, UI will explain potřebnost server-proxy
+   =========================== */
+const pidStops = [
+  {stopAreaId:'52838', name:'Příbram, Březové Hory, Mariánská'},            // Mariánská (node/cis 52838 as you gave)
+  {stopAreaId:'9739/1', name:'Příbram, Březové Hory, náměstí (platforma A)'},
+  {stopAreaId:'1409175511863_MAI00278', name:'Příbram, Březové Hory, domov seniorů'}
+];
+
+async function fetchDepartures(){
+  const container = document.getElementById('departures');
+  container.innerHTML = '';
+  for(const s of pidStops){
+    const block = document.createElement('div'); block.className='stop-block';
+    const title = document.createElement('div'); title.className='stop-name'; title.textContent = s.name;
+    block.appendChild(title);
+    const listWrap = document.createElement('div');
+    listWrap.textContent = 'Načítám...';
+    block.appendChild(listWrap);
+    container.appendChild(block);
+
+    // request
+    try{
+      const url = `${PID_BASE}/departures?stopAreaId=${encodeURIComponent(s.stopAreaId)}&maxNo=8`;
+      const r = await fetch(url, { headers: { 'Authorization': 'Bearer '+PID_TOKEN } });
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      const j = await r.json();
+
+      // Golemio response structure can vary; try to handle main variants
+      // Common: j.data (array) OR j.departures
+      let departures = j.departures || (j.data && j.data[0] && j.data[0].departures) || j.data;
+      // If departures in nested places, flatten
+      if(!departures && Array.isArray(j)) departures = j;
+      if(!departures){ listWrap.textContent = 'Žádné odjezdy'; continue; }
+
+      // normalize each dep
+      listWrap.innerHTML = '';
+      // if structure uses objects with 'line' or 'line.name'
+      const top = document.createElement('div');
+      departures.slice(0,8).forEach(dep=>{
+        // try several ways to read fields
+        const line = dep.line ? (dep.line.name || dep.line) : (dep.tripShortName || dep.routeShortName || dep.lineName || dep.lineNameLocal || dep.lineRef || dep.line || '—');
+        const direction = dep.direction || dep.headsign || dep.directionName || dep.destination || (dep.stop ? dep.stop : '');
+        const time = dep.time || dep.expectedTime || dep.timePlanned || dep.plannedTime || dep.timeReal || dep.expectedArrival || dep.expectedDeparture || dep.expected;
+        const delay = dep.delay || dep.timeDelta || dep.expectedDelay || dep.estimatedDelay;
+        const li = document.createElement('div'); li.className='dep-row';
+        const left = document.createElement('div'); left.className='dep-left'; left.textContent = `${line} → ${direction}`;
+        const right = document.createElement('div'); right.className='dep-time';
+        // try to format time (if string contains HH:MM)
+        let timeText = (typeof time === 'string' && time.match(/\d{2}:\d{2}/)) ? time.match(/\d{2}:\d{2}/)[0] : (time ? String(time) : '—');
+        if(delay && Number(delay) !== 0) timeText += ` (+${delay} min)`;
+        right.textContent = timeText;
+        li.appendChild(left); li.appendChild(right);
+        listWrap.appendChild(li);
+      });
+
+    }catch(err){
+      // show clear CORS/HTTP error instructions
+      listWrap.innerHTML = `<div style="color:#f6c6a8"><b>Chyba při načítání (API/CORS)</b><div class="meta">Pokud se zobrazí tato zpráva, API v prohlížeči blokuje požadavek. Řešení: server-proxy (Cloudflare Worker / malý server) přeposílající hlavičku Authorization.</div></div>`;
+    }
+  }
+}
+
+/* ===========================
+   TICKER handling - ensure continuous repeating
+   =========================== */
+function initTicker(){
+  const marquee = document.getElementById('marq');
+  // duplicate content to ensure long scroll if short
+  if(marquee.textContent.length < 80){
+    marquee.textContent = marquee.textContent + ' • ' + marquee.textContent + ' • ' + marquee.textContent;
+  }
+  // animation defined by CSS keyframes; nothing else needed
+}
+
+/* ===========================
+   INIT / scheduling
+   =========================== */
+function refreshAll(){
+  updateClockAndProgress();
+  fetchWeather();
+  fetchLunch();
+  fetchDepartures();
+  initTicker();
+  // update meta status
+  const now = new Date();
+  setMetaStatus(`${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
+}
+
+refreshAll();
+setInterval(updateClockAndProgress,1000);            // clock tick every 1s
+setInterval(fetchWeather, (REFRESH_MIN*60*1000));    // weather every 15 min
+setInterval(fetchLunch, (REFRESH_MIN*60*1000));      // lunch every 15 min
+setInterval(fetchDepartures, 60*1000);               // departures every 60s (if allowed)
 </script>
 </body>
 </html>
-
-
