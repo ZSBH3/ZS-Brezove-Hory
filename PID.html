@@ -290,7 +290,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
     <div class="tickerTime"><i class="fa-regular fa-clock"></i><span id="ticker-time">--:--</span></div>
     <div class="tickerTrack">
       <div class="tickerLane" id="ticker-lane">
-        <span>Vítejte na ZŠ Březové Hory • Sledujte web školy pro aktuální informace • Prosíme, choďte přesně na vyučování • Školní jídelna – odhlášky do 14:00 předešlého dne • Přejeme hezký den!</span>
+        <span>Ve čtvrtek 29. října se bude od 9:40 ve velké tělocvičně konat tradiční předávání anglických certifikátů.</span>
       </div>
     </div>
   </div>
@@ -435,7 +435,7 @@ async function fetchNameday(){
     // jednoduché API (většinou CORS OK); fallback přes allorigins
     const today = new Date();
     const y = today.getFullYear(), m = pad2(today.getMonth()+1), d = pad2(today.getDate());
-    let res = await fetch(`https://svatkyapi.cz/api/day?date=${y}-${m}-${d}`);
+    const res = await fetch(PROXY_RAW + encodeURIComponent(`https://svatkyapi.cz/api/day?date=${y}-${m}-${d}`));
     if(!res.ok) throw new Error('svatkyapi direct failed');
     let data = await res.json();
     if(Array.isArray(data) && data[0] && data[0].name){
