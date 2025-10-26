@@ -312,7 +312,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 /* ================== KONFIG ================== */
 const REFRESH_MIN = 10; // celkový refresh (počasí, jídelníček, svátek, odjezdy)
 const SCHOOL_MENU_URL = "https://zsbrezovehory.cz/jidelni-listek/";
-const PROXY_RAW = "https://api.allorigins.win/raw?url="; // pro jídelníček + svátek fallback
+const PROXY_RAW = "https://api.allorigins.win/raw?url="; // pro jídelníček
 
 /* ================== UTIL ================== */
 const $ = sel => document.querySelector(sel);
@@ -321,12 +321,6 @@ function pad2(n){return n<10?'0'+n:n}
 function fmtTime(d){return pad2(d.getHours())+':'+pad2(d.getMinutes())}
 function secondsToMinSec(s){ const m=Math.floor(s/60), sec=s%60; return `${m} min ${pad2(sec)} s` }
 function parseHM(hm){ const [h,m]=hm.split(':').map(x=>parseInt(x,10)); return {h,m, total:h*60+m}; }
-function minutesFromNowTo(hm){
-  const now = new Date();
-  const nowMin = now.getHours()*60 + now.getMinutes();
-  const t = parseHM(hm).total;
-  return t - nowMin;
-}
 
 /* ================== TICKER (plynulý RTL) ================== */
 let tickerX = 0;
@@ -430,41 +424,27 @@ function updateLesson(){
 }
 setInterval(updateLesson,1000); updateLesson();
 
-/* ================== SVÁTEK ================== */
-/* Státní svátky (offline) */
-const STATE_HOLIDAYS = [
-  "01-01:Nový rok", "05-01:Svátek práce", "05-08:Den vítězství",
-  "07-05:Den slovanských věrozvěstů", "07-06:Mistr Jan Hus",
-  "09-28:Den české státnosti", "10-28:Den vzniku Československa",
-  "11-17:Den boje za svobodu a demokracii",
-  "12-24:Štědrý den", "12-25:1. svátek vánoční", "12-26:2. svátek vánoční"
-];
-function getStateHolidayLabel(d){
-  const key = pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
-  const hit = STATE_HOLIDAYS.find(x=>x.startsWith(key));
-  return hit ? hit.split(":")[1] : null;
-}
-async function fetchNameday(){
-  // 1) státní svátek má prioritu
-  const today = new Date();
-  const state = getStateHolidayLabel(today);
-  if(state){ $('#nameday').textContent = `Svátek: ${state}`; return; }
-
-  // 2) jmenný svátek online (s proxy). Když to selže, ponecháme "—".
-  try{
-    const y = today.getFullYear(), m = pad2(today.getMonth()+1), d = pad2(today.getDate());
-    const res = await fetch(PROXY_RAW + encodeURIComponent(`https://svatkyapi.cz/api/day?date=${y}-${m}-${d}`), {cache:'no-store'});
-    if(res.ok){
-      const data = await res.json();
-      if(Array.isArray(data) && data[0] && data[0].name){
-        $('#nameday').textContent = `Svátek: ${data[0].name}`;
-        return;
-      }
-    }
-    $('#nameday').textContent = 'Svátek: —';
-  }catch(e){
-    $('#nameday').textContent = 'Svátek: —';
-  }
+/* ================== SVÁTEK — KOMPLETNÍ OFFLINE SEZNAM ================== */
+const NAMEDAYS = {
+"01":{1:"Nový rok, Den obnovy samostatného českého státu",2:"Karina",3:"Radmila",4:"Diana",5:"Dalimil",6:"Tři králové, Kašpar, Melichar, Baltazar",7:"Vilma",8:"Čestmír",9:"Vladan",10:"Břetislav",11:"Bohdana",12:"Pravoslav",13:"Edita",14:"Radovan",15:"Alice",16:"Ctirad",17:"Drahoslav",18:"Vladislav",19:"Doubravka",20:"Ilona",21:"Běla",22:"Slavomír",23:"Zdeněk",24:"Milena",25:"Miloš",26:"Zora",27:"Ingrid",28:"Otýlie",29:"Zdislava",30:"Robin",31:"Marika"},
+"02":{1:"Hynek",2:"Nela",3:"Blažej",4:"Jarmila",5:"Dobromila",6:"Vanda",7:"Veronika",8:"Milada",9:"Apolena",10:"Mojmír",11:"Božena",12:"Slavěna",13:"Věnceslav",14:"Valentýn",15:"Jiřina",16:"Ljuba",17:"Miloslava",18:"Gizela",19:"Patrik",20:"Oldřich",21:"Lenka",22:"Petr",23:"Svatopluk",24:"Matěj",25:"Liliana",26:"Dorota",27:"Alexandr",28:"Lumír",29:"Horymír (přestupný rok)"},
+"03":{1:"Bedřich",2:"Anežka",3:"Kamil",4:"Stela",5:"Kazimír",6:"Miroslav",7:"Tomáš",8:"Gabriela, Mezinárodní den žen",9:"Františka",10:"Viktorie",11:"Anděla",12:"Řehoř",13:"Růžena",14:"Rút, Matylda",15:"Ida",16:"Elena, Herbert",17:"Vlastimil",18:"Eduard",19:"Josef",20:"Světlana",21:"Radek, Jarní rovnodennost",22:"Leona",23:"Ivona",24:"Gabriel",25:"Marián",26:"Emanuel",27:"Dita",28:"Soňa",29:"Taťána",30:"Arnošt",31:"Kvido"},
+"04":{1:"Hugo",2:"Erika",3:"Richard",4:"Ivana",5:"Miroslava",6:"Vendula",7:"Heřman, Hermína",8:"Ema",9:"Dušan",10:"Darja",11:"Izabela",12:"Julius",13:"Aleš",14:"Vincenc",15:"Anastázie",16:"Irena",17:"Rudolf",18:"Valérie",19:"Rostislav",20:"Marcela",21:"Alexandra",22:"Evženie, Den Země",23:"Vojtěch",24:"Jiří",25:"Marek",26:"Oto",27:"Jaroslav",28:"Vlastislav",29:"Robert",30:"Blahoslav, Filipojakubská noc"},
+"05":{1:"Svátek práce",2:"Zikmund",3:"Alexej",4:"Květoslav",5:"Klaudie",6:"Radoslav",7:"Stanislav",8:"Den vítězství",9:"Ctibor",10:"Blažena",11:"Svatava",12:"Pankrác",13:"Servác",14:"Bonifác",15:"Žofie",16:"Přemysl",17:"Aneta",18:"Nataša",19:"Ivo",20:"Zbyšek",21:"Monika",22:"Emil",23:"Vladimír",24:"Jana",25:"Viola",26:"Filip",27:"Valdemar",28:"Vilém",29:"Maxmilián",30:"Ferdinand",31:"Kamila"},
+"06":{1:"Laura, Mezinárodní den dětí",2:"Jarmil",3:"Tamara",4:"Dalibor",5:"Dobroslav",6:"Norbert",7:"Iveta",8:"Medard",9:"Stanislava",10:"Gita",11:"Bruno",12:"Antonie",13:"Antonín",14:"Roland",15:"Vít",16:"Zbyněk",17:"Adolf",18:"Milan",19:"Leoš",20:"Květa",21:"Alois, Letní slunovrat",22:"Pavla",23:"Zdeňka",24:"Jan",25:"Ivan",26:"Adriana",27:"Ladislav",28:"Lubomír",29:"Petr a Pavel",30:"Šárka"},
+"07":{1:"Jaroslava",2:"Patricie",3:"Radomír",4:"Prokop",5:"Cyril a Metoděj (státní svátek)",6:"Mistr Jan Hus (státní svátek)",7:"Bohuslava",8:"Nora",9:"Drahoslava",10:"Libuše, Amálie",11:"Olga",12:"Bořek",13:"Markéta",14:"Karolína",15:"Jindřich",16:"Luboš",17:"Martina",18:"Drahomíra",19:"Čeněk",20:"Ilja",21:"Vítězslav",22:"Magdaléna",23:"Libor",24:"Kristýna",25:"Jakub",26:"Anna",27:"Věroslav",28:"Viktor",29:"Marta",30:"Bořivoj",31:"Ignác"},
+"08":{1:"Oskar",2:"Gustav",3:"Miluše",4:"Dominik",5:"Kristián",6:"Oldřiška",7:"Lada",8:"Soběslav",9:"Roman",10:"Vavřinec",11:"Zuzana",12:"Klára",13:"Alena",14:"Alan",15:"Hana",16:"Jáchym",17:"Petra",18:"Helena",19:"Ludvík",20:"Bernard",21:"Johana",22:"Bohuslav",23:"Sandra",24:"Bartoloměj",25:"Radim",26:"Luděk",27:"Otakar",28:"Augustýn",29:"Evelína",30:"Vladěna",31:"Pavlína"},
+"09":{1:"Linda, Samuel",2:"Adéla",3:"Bronislav",4:"Jindřiška",5:"Boris",6:"Boleslav",7:"Regina",8:"Mariana",9:"Daniela",10:"Irma",11:"Denisa",12:"Marie",13:"Lubor",14:"Radka",15:"Jolana",16:"Ludmila",17:"Naděžda",18:"Kryštof",19:"Zita",20:"Oleg",21:"Matouš",22:"Darina, Podzimní rovnodennost",23:"Berta",24:"Jaromír",25:"Zlata",26:"Andrea",27:"Jonáš",28:"Václav (státní svátek)",29:"Michal",30:"Jeroným"},
+"10":{1:"Igor",2:"Olívie",3:"Bohumil",4:"František",5:"Eliška",6:"Hanuš",7:"Justýna",8:"Věra",9:"Štefan, Sára",10:"Marina",11:"Andriana",12:"Marcel",13:"Renáta",14:"Agáta",15:"Tereza",16:"Havel",17:"Hedvika",18:"Lukáš",19:"Michaela",20:"Vendelín",21:"Brigita",22:"Sabina",23:"Teodor",24:"Nina",25:"Beáta",26:"Erik",27:"Šarlota",28:"Státní svátek (vznik ČSR)",29:"Silvie",30:"Tadeáš",31:"Štěpánka"},
+"11":{1:"Felix",2:"Památka zesnulých (Dušičky)",3:"Hubert",4:"Karel",5:"Miriam",6:"Liběna",7:"Saskie",8:"Bohumír",9:"Bohdan",10:"Evžen",11:"Martin",12:"Benedikt",13:"Tibor",14:"Sáva",15:"Leopold",16:"Otmar",17:"Mahulena, Den studentů",18:"Romana",19:"Alžběta",20:"Nikola",21:"Albert",22:"Cecílie",23:"Klement",24:"Emílie",25:"Kateřina",26:"Artur",27:"Xenie",28:"René",29:"Zina",30:"Ondřej"},
+"12":{1:"Iva",2:"Blanka",3:"Svatoslav",4:"Barbora",5:"Jitka",6:"Mikuláš",7:"Ambrož, Benjamín",8:"Květoslava",9:"Vratislav",10:"Julie",11:"Dana",12:"Simona",13:"Lucie",14:"Lýdie",15:"Radana",16:"Albína",17:"Daniel",18:"Miloslav",19:"Ester",20:"Dagmar",21:"Natálie, Zimní slunovrat",22:"Šimon",23:"Vlasta",24:"Adam a Eva, Štědrý den",25:"1. svátek vánoční",26:"Štěpán",27:"Žaneta",28:"Bohumila",29:"Judita",30:"David",31:"Silvestr"}
+};
+function updateNameday(){
+  const d = new Date();
+  const m = pad2(d.getMonth()+1);
+  const day = d.getDate();
+  const text = NAMEDAYS[m] && NAMEDAYS[m][day] ? NAMEDAYS[m][day] : '—';
+  $('#nameday').textContent = 'Svátek: ' + text;
 }
 
 /* ================== POČASÍ (Open-Meteo) ================== */
@@ -538,7 +518,7 @@ async function fetchMenu(){
 }
 
 /* ================== ODJEZDY — OFFLINE LISTS ================== */
-/* Vlaky — stanice Příbram (vybrané spoje z tvého seznamu, bez duplicit) */
+/* Vlaky — stanice Příbram (vybrané spoje, bez duplicit) */
 const OFFLINE_TRAINS = [
   { line:"S60 (Os 7903)", headsign:"Beroun (přes Jince, Lochovice, Zdice)", time:"06:10" },
   { line:"S60 (Os 7902)", headsign:"Strakonice (přes sídliště, Březnice, Blatná)", time:"06:39" },
@@ -569,7 +549,7 @@ const OFFLINE_TRAINS = [
   { line:"S60 (Os 7918)", headsign:"Blatná (přes sídliště, Březnice)", time:"22:07" }
 ];
 
-/* Autobusy — dvě zastávky (náměstí + domov seniorů), z tvých seznamů */
+/* Autobusy — dvě zastávky (náměstí + domov seniorů) */
 const OFFLINE_BUSES = [
   {
     stopName: "Příbram, Březové Hory, náměstí",
@@ -710,7 +690,6 @@ function renderTrains(){
   const now = new Date();
   const nowMin = now.getHours()*60 + now.getMinutes();
 
-  // Vytvoříme jeden blok „stanice Příbram“
   const block = document.createElement('div');
   block.className='stopBlock';
   block.innerHTML = `
@@ -810,7 +789,7 @@ async function refreshAll(){
   updateLesson();
   fetchWeather();
   fetchMenu();
-  fetchNameday();
+  updateNameday();   // <<< svátky z offline seznamu
   renderTrains();
   renderBuses();
   setMetaAndTicker();
@@ -828,3 +807,4 @@ window.addEventListener('load', ()=>{
 </script>
 </body>
 </html>
+
