@@ -495,42 +495,42 @@ async function fetchWeather(){
 /* ================== JÍDELNÍČEK – OFFLINE NA CELÝ TÝDEN ================== */
 function fetchMenu(){
   const menu = {
-    0: { // Pondělí
-      polevka: "Polévka hrachová (01)",
-      obed: "Čevabčiči Mazel, brambory, hořčice, cibule (01,07,09,10)",
-      napoj: "Mléko, voda se sirupem (07)",
+    1: { // Pondělí
+      polevka: " ",
+      obed: " ",
+      napoj: " ",
+      dezert: " "
+    },
+    2: { // Úterý
+      polevka: " ",
+      obed: " ",
+      napoj: " ",
+      dezert: " "
+    },
+    3: { // Středa
+      polevka: " ",
+      obed: " ",
+      napoj: " ",
+      dezert: " "
+    },
+    4: { // Čtvrtek
+      polevka: "Hovězí polévka s játrovou rýží (01,03,09)",
+      obed: "Dukátové buchtičky s krémem (01,03,07)",
+      napoj: "Mléko , Voda se sirupem (07)",
       dezert: "Dezert"
     },
-    1: { // Úterý
-      polevka: "Droždová",
-      obed: "Kuře ala bažant, dušená rýže",
-      napoj: "Mléko banán, voda se sirupem (07)",
-      dezert: "Ovoce"
-    },
-    2: { // Středa
-      polevka: "Krkonošská zelňačka (01,06)",
-      obed: "Čočka na kyselo, uzená pečeně (01)",
-      napoj: "Mléko, voda se sirupem (07)",
-      dezert: "Salát"
-    },
-    3: { // Čtvrtek
-      polevka: "Polévka zeleninová se strouháním (07)",
-      obed: "Segedínský guláš, houskové knedlíky (01,03,07)",
-      napoj: "Mléko karamel, voda se sirupem (07)",
-      dezert: "Dezert"
-    },
-    4: { // Pátek
-      polevka: "Gulášová polévka (01)",
-      obed: "Těstoviny s mákem (01,07)",
-      napoj: "Mléko čokoláda, voda se sirupem (07)",
-      dezert: "Krém tvarohový s ovocem (07)"
+    5: { // Pátek
+      polevka: "Čarodějnický dýňový lektvar - Krémová dýňová polévka s kouzelným kořením – zahřeje i ty nejzmrzlejší",
+      obed: "Netopýří hnízdo s celerovými červíky - Černá rýže s kuřecími nudličkami na celeru – chutná tak dobře",
+      napoj: "Dýňový smíšek - Oranžový muffin z čarodějné trouby – sladká odměna pro každé odvážné strašidýlko",
+      dezert: "Upíří krev - Bublinkový nápoj temné noci – elixír, který dodá sílu na další kouzla"
     }
   };
 
-  const day = new Date().getDay(); // 0=Po ... 4=Pá, 5/6=víkend
+  const day = new Date().getDay(); // 1=Po ... 5=Pá, 0/6=víkend
   let html = "<h4>Dnešní oběd</h4>";
 
-  if(day === 5 || day === 6 ){
+  if(day === 0 || day === 6 ){
     html += "<div class='meal'><em>Dnes není výdej jídel (víkend)</em></div>";
   } else {
     const d = menu[day];
