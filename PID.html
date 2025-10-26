@@ -284,9 +284,6 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
           <p style="margin:0">V kategorii Ředitel roku obsadil 2. místo Mgr. Josef Strejc, v kategorii Učitel roku se na krásném 3. místě umístil Mgr. Jakub Štochl a zcela mimořádný úspěch zaznamenala Aneta Žaludová, která získala titul TOP student a stala se absolutní vítězkou celé ankety.</p>
           <ul style="margin:10px 0 0 18px;line-height:1.6">
             <li>Halloween ve školní jídelně - V rámci Halloweenu jsme pro žáky připravili tématické menu ve školní jídelně. Děti se mohou těšit na originální podzimní chutě a zábavnou atmosféru.</li>
-            <li>Vážení žáci/žákyně,
-
-vedení školy se opět rozhodlo uspořádat celoškolní projekt participativního rozpočtování: Pébéčko. Máte tak příležitost podat svůj vlastní návrh, jak zlepšit prostředí a atmosféru v naší škole. K dispozici je celková částka na Pébéčko ve výši 40.000 Kč, maximální částka na jeden návrh je 30.000 Kč. O podaných návrzích se bude hlasovat a vítězný projekt bude v nejkratší době na naší škole realizován.</li>
           </ul>
         </div>
       </div>
@@ -330,7 +327,7 @@ function initTicker(){
   const base = lane.innerHTML;
   lane.innerHTML = base + base + base; // trojnásobek pro plynulou smyčku
   function step(){
-    tickerX -= 0.7; // rychlost (pomalejší, čitelné)
+    tickerX -= 1.2; // rychlost (pomalejší, čitelné)
     const w = lane.scrollWidth / 3; // šířka jednoho bloku
     if(-tickerX >= w) tickerX += w; // reset po jednom bloku
     lane.style.transform = `translateX(${tickerX}px)`;
