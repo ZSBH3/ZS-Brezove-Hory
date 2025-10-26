@@ -492,27 +492,61 @@ async function fetchWeather(){
 }
 
 /* ================== JÍDELNÍČEK ================== */
-function sanitizeMenu(htmlStr, maxLen=300000){
-  let s = htmlStr.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<img[^>]*>/gi,'');
-  s = s.replace(/<(?!\/?(p|ul|ol|li|h[1-4]|br|strong|em|b|i|a|div|span)[\s>])/gi,'');
-  if(s.length>maxLen) s = s.slice(0,maxLen)+'…';
-  s = s.replace(/<a\b([^>]*)>/gi,(m,attrs)=>{const href=(attrs.match(/href=["']?([^"'>\s]+)/i)||[])[1]||'#';return `<a href="${href}" target="_blank" style="color:#ffd9b8;text-decoration:underline">`;});
-  return s;
-}
-async function fetchMenu(){
-  try{
-    const r = await fetch(PROXY_RAW + encodeURIComponent(SCHOOL_MENU_URL), {cache:'no-store'});
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const html = await r.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html,'text/html');
-    const sel = doc.querySelector('main, article, .entry-content, .post-content, .elementor-widget-container, .content, .wp-block-group');
-    const raw = sel ? sel.innerHTML : doc.body.innerHTML;
-    const safe = sanitizeMenu(raw);
-    $('#obed').innerHTML = safe;
-  }catch(e){
-    $('#obed').innerHTML = '<em>Nelze načíst jídelníček (CORS/zdroj nedostupný). Zkuste později.</em>';
+/* ================== JÍDELNÍČEK – OFFLINE NA CELÝ TÝDEN ================== */
+function fetchMenu(){
+  const menu = {
+    1: { // Pondělí
+      polevka: "Polévka hrachová (01)",
+      obed: "Čevabčiči Mazel, brambory, hořčice, cibule (01,07,09,10)",
+      napoj: "Mléko, voda se sirupem (07)",
+      dezert: "Dezert"
+    },
+    2: { // Úterý
+      polevka: "Droždová",
+      obed: "Kuře ala bažant, dušená rýže",
+      napoj: "Mléko banán, voda se sirupem (07)",
+      dezert: "Ovoce"
+    },
+    3: { // Středa
+      polevka: "Krkonošská zelňačka (01,06)",
+      obed: "Čočka na kyselo, uzená pečeně (01)",
+      napoj: "Mléko, voda se sirupem (07)",
+      dezert: "Salát"
+    },
+    4: { // Čtvrtek
+      polevka: "Polévka zeleninová se strouháním (07)",
+      obed: "Segedínský guláš, houskové knedlíky (01,03,07)",
+      napoj: "Mléko karamel, voda se sirupem (07)",
+      dezert: "Dezert"
+    },
+    5: { // Pátek
+      polevka: "Gulášová polévka (01)",
+      obed: "Těstoviny s mákem (01,07)",
+      napoj: "Mléko čokoláda, voda se sirupem (07)",
+      dezert: "Krém tvarohový s ovocem (07)"
+    }
+  };
+
+  const day = new Date().getDay(); // 1=Po ... 5=Pá, 0/6=víkend
+  let html = "<h4>Dnešní oběd</h4>";
+
+  if(day === 0 || day === 6){
+    html += "<div class='meal'><em>Dnes není výdej jídel (víkend)</em></div>";
+  } else {
+    const d = menu[day];
+    if(d){
+      html += `
+        <div class='meal'><strong>Polévka:</strong> ${d.polevka}</div>
+        <div class='meal'><strong>Hlavní chod:</strong> ${d.obed}</div>
+        <div class='meal'><strong>Nápoj:</strong> ${d.napoj}</div>
+        <div class='meal'><strong>Dezert:</strong> ${d.dezert}</div>
+      `;
+    } else {
+      html += "<div class='meal'><em>Pro dnešek není jídelníček zadán.</em></div>";
+    }
   }
+
+  document.getElementById("obed").innerHTML = html;
 }
 
 /* ================== ODJEZDY — OFFLINE LISTS ================== */
