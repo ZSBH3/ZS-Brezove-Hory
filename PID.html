@@ -349,31 +349,31 @@ const DAY_PLAN = (()=> {
   }
   // 0. hod 7:00-7:45
   addBlock("0. hodina",7,0,45,false);
-  addBlock("Přestávka",7,45,15,true);
+  addBlock("Malá přestávka",7,45,15,true);
   // 1. hod 8:00-8:45
   addBlock("1. hodina",8,0,45,false);
-  addBlock("Přestávka",8,45,10,true);
+  addBlock("Malá přestávka",8,45,10,true);
   // 2. hod 8:55-9:40
   addBlock("2. hodina",8,55,45,false);
   addBlock("Velká přestávka",9,40,20,true);
   // 3. hod 10:00-10:45
   addBlock("3. hodina",10,0,45,false);
-  addBlock("Přestávka",10,45,10,true);
+  addBlock("Malá přestávka",10,45,10,true);
   // 4. hod 10:55-11:40
   addBlock("4. hodina",10,55,45,false);
-  addBlock("Přestávka",11,40,10,true);
+  addBlock("Malá přestávka",11,40,10,true);
   // 5. hod 11:50-12:35
   addBlock("5. hodina",11,50,45,false);
-  addBlock("Přestávka",12,35,10,true);
+  addBlock("Malá přestávka",12,35,10,true);
   // 6. hod 12:45-13:30
   addBlock("6. hodina",12,45,45,false);
-  addBlock("Přestávka",13,30,10,true);
+  addBlock("Malá přestávka",13,30,10,true);
   // 7. hod 13:40-14:25
   addBlock("7. hodina",13,40,45,false);
-  addBlock("Přestávka",14,25,10,true);
+  addBlock("Malá přestávka",14,25,10,true);
   // 8. hod 14:35-15:20
   addBlock("8. hodina",14,35,45,false);
-  addBlock("Přestávka",15,20,10,true);
+  addBlock("Malá přestávka",15,20,10,true);
   // 9. hod 15:30-16:15
   addBlock("9. hodina",15,30,45,false);
   return items;
@@ -542,14 +542,9 @@ const OFFLINE_TRAINS = [
   { line:"R26 (R 1171)", headsign:"Praha hl.n. (přes Zdice, Beroun, Praha-Kačerov)", time:"17:01" },
   { line:"S60 (Os 7914)", headsign:"Blatná (přes sídliště, Březnice)", time:"17:48" },
   { line:"S60 (Os 7917)", headsign:"Beroun (přes Jince, Lochovice, Zdice)", time:"18:08" },
-  { line:"R26 (R 1174)", headsign:"Písek (přes Březnice, Mirovice, Čimelice)", time:"18:53" },
-  { line:"R26 (R 1173)", headsign:"Praha hl.n. (přes Zdice, Beroun, Praha-Kačerov)", time:"19:01" },
-  { line:"S60 (Os 7916)", headsign:"Strakonice (přes sídliště, Březnice, Blatná)", time:"19:47" },
-  { line:"S60 (Os 7919)", headsign:"Beroun (přes Jince, Lochovice, Zdice)", time:"20:24" },
-  { line:"S60 (Os 7918)", headsign:"Blatná (přes sídliště, Březnice)", time:"22:07" }
 ];
 
-/* Autobusy — dvě zastávky (náměstí + domov seniorů) */
+/* Autobusy — jedna zastávka (náměstí) */
 const OFFLINE_BUSES = [
   {
     stopName: "Příbram, Březové Hory, náměstí",
@@ -588,71 +583,6 @@ const OFFLINE_BUSES = [
       {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"13:44"},
       {line:"503", headsign:"Příbram, Svatá Hora", time:"13:45"},
       {line:"508", headsign:"Příbram, Šachetní (přes Březové Hory)", time:"13:55"},
-      {line:"505", headsign:"Kozičín", time:"14:04"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"14:15"},
-      {line:"505", headsign:"Orlov (II. poliklinika, K Podlesí)", time:"14:23"},
-      {line:"503", headsign:"Svatá Hora", time:"14:44"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"14:45"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"14:50"},
-      {line:"505", headsign:"Kozičín", time:"15:09"},
-      {line:"503", headsign:"Svatá Hora", time:"15:14"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"15:15"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"15:25"},
-      {line:"505", headsign:"Orlov (II. poliklinika, K Podlesí)", time:"15:28"},
-      {line:"503", headsign:"Svatá Hora", time:"15:44"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"15:45"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"15:55"},
-      {line:"503", headsign:"Svatá Hora", time:"16:14"},
-      {line:"505", headsign:"Kozičín", time:"16:14"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"16:15"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"16:25"},
-      {line:"505", headsign:"aut. nádr. (Čs. armády) – II. poliklinika", time:"16:33"},
-      {line:"503", headsign:"Svatá Hora", time:"17:14"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"17:15"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"17:25"},
-      {line:"505", headsign:"Kozičín", time:"17:59"},
-      {line:"503", headsign:"Jiráskovy sady", time:"18:14"},
-      {line:"503", headsign:"Příbram, Jiráskovy sady", time:"18:15"},
-      {line:"505", headsign:"Orlov (II. poliklinika, K Podlesí)", time:"18:18"}
-    ]
-  },
-  {
-    stopName: "Příbram, Březové Hory, domov seniorů",
-    items: [
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"06:25"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"06:29"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"06:30"},
-      {line:"505", headsign:"Kozičín", time:"06:44"},
-      {line:"508", headsign:"Příbram, Šachetní (přes Březové Hory)", time:"07:15"},
-      {line:"505", headsign:"Jiráskovy sady (II. poliklinika)", time:"07:23"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"07:24"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"07:25"},
-      {line:"508", headsign:"Příbram, Březové Hory", time:"07:52"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"08:25"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"08:34"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"08:35"},
-      {line:"505", headsign:"Kozičín", time:"09:14"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"09:25"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"09:29"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"09:30"},
-      {line:"505", headsign:"Orlov (II. poliklinika, K Podlesí)", time:"09:38"},
-      {line:"505", headsign:"Kozičín", time:"10:24"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"10:25"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"10:29"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"10:30"},
-      {line:"505", headsign:"aut. nádr. (Čs. armády)", time:"10:48"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"11:25"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"11:29"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"11:30"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"12:15"},
-      {line:"503", headsign:"Svatá Hora (aut.nádr., Jiráskovy sady)", time:"12:29"},
-      {line:"505", headsign:"Kozičín", time:"12:29"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"12:30"},
-      {line:"505", headsign:"Orlov (II. poliklinika, K Podlesí)", time:"13:13"},
-      {line:"508", headsign:"Příbram, Svatá Hora", time:"13:15"},
-      {line:"503", headsign:"Svatá Hora", time:"13:44"},
-      {line:"503", headsign:"Příbram, Svatá Hora", time:"13:45"},
-      {line:"508", headsign:"Příbram, Šachetní", time:"13:55"},
       {line:"505", headsign:"Kozičín", time:"14:04"},
       {line:"508", headsign:"Příbram, Svatá Hora", time:"14:15"},
       {line:"505", headsign:"Orlov (II. poliklinika, K Podlesí)", time:"14:23"},
