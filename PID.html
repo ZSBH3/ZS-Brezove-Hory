@@ -495,31 +495,31 @@ async function fetchWeather(){
 /* ================== JÍDELNÍČEK – OFFLINE NA CELÝ TÝDEN ================== */
 function fetchMenu(){
   const menu = {
-    1: { // Pondělí
+    0: { // Pondělí
       polevka: "Polévka hrachová (01)",
       obed: "Čevabčiči Mazel, brambory, hořčice, cibule (01,07,09,10)",
       napoj: "Mléko, voda se sirupem (07)",
       dezert: "Dezert"
     },
-    2: { // Úterý
+    1: { // Úterý
       polevka: "Droždová",
       obed: "Kuře ala bažant, dušená rýže",
       napoj: "Mléko banán, voda se sirupem (07)",
       dezert: "Ovoce"
     },
-    3: { // Středa
+    2: { // Středa
       polevka: "Krkonošská zelňačka (01,06)",
       obed: "Čočka na kyselo, uzená pečeně (01)",
       napoj: "Mléko, voda se sirupem (07)",
       dezert: "Salát"
     },
-    4: { // Čtvrtek
+    3: { // Čtvrtek
       polevka: "Polévka zeleninová se strouháním (07)",
       obed: "Segedínský guláš, houskové knedlíky (01,03,07)",
       napoj: "Mléko karamel, voda se sirupem (07)",
       dezert: "Dezert"
     },
-    5: { // Pátek
+    4: { // Pátek
       polevka: "Gulášová polévka (01)",
       obed: "Těstoviny s mákem (01,07)",
       napoj: "Mléko čokoláda, voda se sirupem (07)",
@@ -527,10 +527,10 @@ function fetchMenu(){
     }
   };
 
-  const day = new Date().getDay(); // 1=Po ... 5=Pá, 0/6=víkend
+  const day = new Date().getDay(); // 0=Po ... 4=Pá, 5/6=víkend
   let html = "<h4>Dnešní oběd</h4>";
 
-  if(day === 0 || day === 6){
+  if(day === 5 || day === 6 ){
     html += "<div class='meal'><em>Dnes není výdej jídel (víkend)</em></div>";
   } else {
     const d = menu[day];
