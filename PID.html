@@ -281,7 +281,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
         <div class="newsThumb" id="news-thumb" style="background-image:url('https://zsbrezovehory.cz/wp-content/uploads/2020/11/participativni-rozpocet-logo-400x250.jpg');"></div>
         <div class="newsTxt">
           <h4 style="margin:0 0 6px 0;color:#ffdcbc">Participativní rozpočet</h4>
-          <p style="margin:0">#ČESKObudoucnosti</p>
+          <p style="margin:0">#ČESKObudoucnosti - V kategorii Ředitel roku obsadil 2. místo Mgr. Josef Strejc, V kategorii Učitel roku se na krásném 3. místě umístil Mgr. Jakub Štochl, A zcela mimořádný úspěch zaznamenala Aneta Žaludová, která získala titul TOP student a stala se absolutní vítězkou celé ankety.</p>
           <ul style="margin:10px 0 0 18px;line-height:1.6">
             <li>Halloween ve školní jídelně</li>
           </ul>
@@ -327,7 +327,7 @@ function initTicker(){
   const base = lane.innerHTML;
   lane.innerHTML = base + base + base; // trojnásobek pro plynulou smyčku
   function step(){
-    tickerX -= 0.4; // rychlost (pomalejší, čitelné)
+    tickerX -= 0.7; // rychlost (pomalejší, čitelné)
     const w = lane.scrollWidth / 3; // šířka jednoho bloku
     if(-tickerX >= w) tickerX += w; // reset po jednom bloku
     lane.style.transform = `translateX(${tickerX}px)`;
