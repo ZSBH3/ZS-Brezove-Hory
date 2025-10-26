@@ -253,7 +253,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
     <div class="card" id="card-menu">
       <div class="card-header">
         <div class="icon"><i class="fa-solid fa-utensils"></i></div>
-        <div><h3>Dnešní oběd</h3><div class="meta">Zdroj: zsbrezovehory.cz</div></div>
+        <div><h3>Dnešní oběd</h3><div class="meta">Zdroj: Strava.cz (jídelna 4094)</div></div>
       </div>
       <div id="obed"><em>Načítám jídelníček...</em></div>
     </div>
@@ -311,7 +311,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 <script>
 /* ================== KONFIG ================== */
 const REFRESH_MIN = 10; // celkový refresh (počasí, jídelníček, svátek, odjezdy)
-const SCHOOL_MENU_URL = "https://zsbrezovehory.cz/jidelni-listek/";
+const SCHOOL_MENU_URL = "https://app.strava.cz/jidelnicky?jidelna=4094";
 const PROXY_RAW = "https://api.allorigins.win/raw?url="; // pro jídelníček
 
 /* ================== UTIL ================== */
@@ -409,7 +409,7 @@ function updateLesson(){
     endt = `Konec: ${pad2(current.end.h)}:${pad2(current.end.m)}`;
     state = current.isBreak ? 'PŘESTÁVKA' : 'HODINA';
   } else {
-    title = "Mimo vyučování";
+    title = "Konec vyučování";
     sub = "—";
     left = "Zbývá: —";
     endt = "Konec: —";
@@ -444,7 +444,7 @@ function updateNameday(){
   const m = pad2(d.getMonth()+1);
   const day = d.getDate();
   const text = NAMEDAYS[m] && NAMEDAYS[m][day] ? NAMEDAYS[m][day] : '—';
-  $('#nameday').textContent = 'Svátek: ' + text;
+  $('#nameday').textContent = 'Svátek má ' + text;
 }
 
 /* ================== POČASÍ (Open-Meteo) ================== */
