@@ -184,21 +184,21 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 
 /* ================== BOTTOM TICKER ================== */
 .tickerWrap{
-  position:fixed;                 /* ✅ zůstane přilepená dole */
+  position:fixed;                 /* ✅ přichycená dole */
   bottom:0;
   left:0;
-  width:100vw;                    /* přes celou šířku obrazovky */
+  width:100vw;                    /* přes celou obrazovku */
   height:56px;
-  border-top:1px solid rgba(255,255,255,0.06);
-  background:rgba(10,25,30,0.8);  /* tmavší průhledná lišta */
-  backdrop-filter:blur(10px);     /* efekt skla */
-  box-shadow:0 -8px 20px rgba(0,0,0,0.4);
+  border-radius:14px;             /* zachováno */
+  border:var(--border);
+  background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); /* původní vzhled */
+  box-shadow:0 10px 30px rgba(0,0,0,0.4); /* zachováno */
   display:grid;
-  grid-template-columns:180px 1fr;
+  grid-template-columns: 180px 1fr;
   align-items:center;
   overflow:hidden;
   padding:0 0 0 10px;
-  z-index:9999;                   /* navrchu všeho */
+  z-index:9999;
 }
 .tickerTime{
   display:flex;
@@ -221,6 +221,10 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 .tickerLane span{
   margin-right:36px;
 }
+body {
+  padding-bottom:60px; /* rezerva, aby lišta nezakrývala spodní obsah */
+}
+
 
 
 /* ================== RESPONSIVE ================== */
