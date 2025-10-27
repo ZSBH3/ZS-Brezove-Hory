@@ -184,15 +184,44 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 
 /* ================== BOTTOM TICKER ================== */
 .tickerWrap{
-  position:relative; height:56px; border-radius:14px; border:var(--border);
-  background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
-  display:grid; grid-template-columns: 180px 1fr; align-items:center; overflow:hidden; padding:0 0 0 10px;
+  position:fixed;                 /* ✅ zůstane přilepená dole */
+  bottom:0;
+  left:0;
+  width:100vw;                    /* přes celou šířku obrazovky */
+  height:56px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  background:rgba(10,25,30,0.8);  /* tmavší průhledná lišta */
+  backdrop-filter:blur(10px);     /* efekt skla */
+  box-shadow:0 -8px 20px rgba(0,0,0,0.4);
+  display:grid;
+  grid-template-columns:180px 1fr;
+  align-items:center;
+  overflow:hidden;
+  padding:0 0 0 10px;
+  z-index:9999;                   /* navrchu všeho */
 }
-.tickerTime{display:flex;align-items:center;gap:8px;font-weight:800}
-.tickerTrack{position:relative; height:100%; overflow:hidden}
-.tickerLane{white-space:nowrap; position:absolute; will-change:transform; font-size:16px; line-height:56px}
-.tickerLane span{margin-right:36px}
+.tickerTime{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:800;
+}
+.tickerTrack{
+  position:relative;
+  height:100%;
+  overflow:hidden;
+}
+.tickerLane{
+  white-space:nowrap;
+  position:absolute;
+  will-change:transform;
+  font-size:16px;
+  line-height:56px;
+}
+.tickerLane span{
+  margin-right:36px;
+}
+
 
 /* ================== RESPONSIVE ================== */
 @media (max-width: 1360px){
@@ -343,7 +372,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
   <div class="newsContainer">
 
     <div class="newsWrap">
-      <div class="newsThumb" style="background-image:url('https://zsbrezovehory.cz/wp-content/uploads/2025/10/ceskobudoucnoti-400x250.jpg');"></div>
+      <div class="newsThumb" style="background-image:url('https://zsbrezovehory.cz/wp-content/uploads/2025/10/ceskobudoucnoti.jpg');"></div>
       <div class="newsTxt">
         <h4>#ČESKObudoucnosti</h4>
         <p>V kategorii Ředitel roku obsadil 2. místo Mgr. Josef Strejc, v kategorii Učitel roku se na krásném 3. místě umístil Mgr. Jakub Štochl a zcela mimořádný úspěch zaznamenala Aneta Žaludová, která získala titul TOP student a stala se absolutní vítězkou celé ankety.</p>
