@@ -30,44 +30,21 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 }
 
 /* ================== TOP BAR ================== */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 22px;
-  border-radius: 26px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  box-shadow: 0 20px 60px rgba(1,8,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-  border: var(--border);
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:16px 22px; border-radius:26px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow:0 20px 60px rgba(1,8,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  border:var(--border);
 }
-
-.title {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.title{display:flex;align-items:center;gap:14px}
+.logo{
+  width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#00b3a6,#045a63);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;color:white;
+  box-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
-
-.logo {
-  width: 72px;
-  height: 72px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #00b3a6, #045a63);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-  flex-shrink: 0;
-}
-
-.logo img {
-  width: 90%;
-  height: 90%;
-  object-fit: contain; /* zachová poměr loga */
-  display: block;
-  margin: auto;
-}
+.school-name{font-size:28px;font-weight:700;letter-spacing:0.6px;color:#ffefdc;text-shadow:0 3px 20px rgba(0,0,0,0.4)}
+.meta{color:var(--muted);font-size:13px}
 
 /* ================== GRID ================== */
 .grid{
@@ -269,9 +246,8 @@ body {
 
   <!-- TOP BAR -->
   <div class="topbar">
-    
-     </div><div class="logo">
-  <img src="https://zsbrezovehory.cz/wp-content/uploads/2020/07/logo-barevn%C3%A9-zs-brezove-hory.png" alt="">
+    <div class="title">
+      <div class="logo">ZŠBH</div>
       <div>
         <div class="school-name">ZŠ Březové Hory — Informační tabule</div>
         <div class="meta" id="meta-status">Aktualizováno: —</div>
@@ -897,4 +873,3 @@ window.addEventListener('load', ()=>{
 </script>
 </body>
 </html>
-
