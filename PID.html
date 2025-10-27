@@ -39,12 +39,21 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 }
 .title{display:flex;align-items:center;gap:14px}
 .logo{
-  width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#00b3a6,#045a63);
-  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;color:white;
+  width:72px;
+  height:72px;
+  border-radius:12px;
+  overflow:hidden; /* ✅ zajistí zaoblení obrázku */
+  background:linear-gradient(135deg,#00b3a6,#045a63); /* zachová styl pozadí */
+  display:flex;
+  align-items:center;
+  justify-content:center;
   box-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
-.school-name{font-size:28px;font-weight:700;letter-spacing:0.6px;color:#ffefdc;text-shadow:0 3px 20px rgba(0,0,0,0.4)}
-.meta{color:var(--muted);font-size:13px}
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover; /* ✅ aby se logo pěkně vešlo */
+}
 
 /* ================== GRID ================== */
 .grid{
@@ -246,8 +255,9 @@ body {
 
   <!-- TOP BAR -->
   <div class="topbar">
-    <div class="title">
-      <div class="logo">https://zsbrezovehory.cz/wp-content/uploads/2020/07/logo-barevn%C3%A9-zs-brezove-hory.png</div>
+    
+     </div><div class="logo">
+  <img src="https://zsbrezovehory.cz/wp-content/uploads/2020/07/logo-barevn%C3%A9-zs-brezove-hory.png" alt="Logo ZŠ Březové Hory">
       <div>
         <div class="school-name">ZŠ Březové Hory — Informační tabule</div>
         <div class="meta" id="meta-status">Aktualizováno: —</div>
