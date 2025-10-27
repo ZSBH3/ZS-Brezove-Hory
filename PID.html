@@ -115,11 +115,72 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 .meal{padding:8px 10px;border-radius:10px;margin-bottom:8px;background:linear-gradient(90deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02)}
 
 /* ================== NEWS + EVENTS ================== */
-.newsWrap{display:flex;gap:12px}
-.newsThumb{width:160px;height:110px;border-radius:10px;background:#072a2d;background-size:cover;background-position:center;flex-shrink:0}
-.newsTxt{flex:1;text-align:left;font-size:14px;color:#e6eef4}
-.eventsList{display:flex;flex-direction:column;gap:8px;font-size:15px}
-.eventItem{padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);border:var(--border)}
+
+/* ---- AKTUALITY ---- */
+.newsContainer{
+  display:flex;
+  flex-direction:column;
+  gap:20px;                     /* mezery mezi jednotlivými aktualitami */
+}
+
+.newsWrap{
+  display:flex;
+  flex-direction:row;
+  align-items:flex-start;       /* ✅ text i obrázek zarovnány nahoře */
+  gap:20px;
+  padding:14px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.4);
+}
+
+.newsThumb{
+  width:200px;                  /* o něco větší obrázek */
+  height:130px;
+  border-radius:10px;
+  background:#072a2d;
+  background-size:cover;
+  background-position:center;
+  flex-shrink:0;
+}
+
+.newsTxt{
+  flex:1;
+  text-align:justify;           /* ✅ zarovnání textu do bloku */
+  font-size:15px;
+  color:#e6eef4;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;   /* text nahoře vedle obrázku */
+}
+
+.newsTxt h4{
+  margin:0 0 8px 0;
+  font-size:18px;
+  color:#ffdcbc;
+  font-weight:700;
+}
+
+.newsTxt p{
+  margin:0;
+  line-height:1.6;
+}
+
+/* ---- UDÁLOSTI ---- */
+.eventsList{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:15px;
+}
+
+.eventItem{
+  padding:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.02);
+  border:var(--border);
+}
 
 /* ================== BOTTOM TICKER ================== */
 .tickerWrap{
