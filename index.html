@@ -4,6 +4,7 @@
 <link rel="icon" href="https://zsbrezovehory.cz/wp-content/uploads/2020/07/logo-barevn%C3%A9-zs-brezove-hory.png" type="image/png">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="color-scheme" content="dark light">
 <title>Informační tabule — ZŠ Březové Hory</title>
 
 <!-- Fonts & Icons -->
@@ -11,6 +12,40 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
+/* ================== FALLBACKY PRO VŠECHNA ZAŘÍZENÍ ================== */
+body {
+  background-color:#08272d !important;
+  color:#fff !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+}
+
+/* Pokud zařízení neumí grid → použij flex */
+@supports not (display:grid) {
+  .canvas, .grid {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+  }
+  .card, .wCard {
+    width:95% !important;
+    margin:10px auto !important;
+  }
+}
+
+/* Televizní režim (nízké DPI / velká obrazovka) */
+@media screen and (min-width:1800px) {
+  html, body {font-size:22px !important;}
+  .card, .wCard {transform:scale(1.15); transform-origin:top center;}
+}
+
+/* Extrémně malé displeje (mobily) */
+@media (max-width:600px) {
+  html, body {font-size:14px !important;}
+  .grid {grid-template-columns:1fr !important;}
+  .topbar, .tickerWrap {flex-direction:column !important;height:auto !important;}
+}
+
 /* ================== THEME (zachováno) ================== */
 :root{
   --bg1:#08272d; --bg2:#0e3b46; --accent:#ff8a3d;
@@ -291,9 +326,18 @@ body {
 
 /* utility hidden */
 .hidden{display:none!important}
+
+/* Fallback barevné pozadí – pro TV co neumí gradient */
+@media (forced-colors: active), (prefers-color-scheme: light) {
+  html,body {
+    background:#08272d !important;
+    color:#fff !important;
+  }
+}
+
 </style>
 </head>
-<body>
+<body style="min-height:100vh;overflow:auto;display:flex;flex-direction:column;align-items:center;">
 <div class="canvas">
 
   <!-- TOP BAR -->
