@@ -85,9 +85,6 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 .progressInfo div{font-size:14px;color:#ffdcbc}
 
 /* ================== WEATHER ================== */
-.weatherGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch}
-.wCard{background:rgba(255,255,255,0.03);border:var(--border);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
-.wIcon{font-size:30px}
 /* ================== WEATHER ================== */
 .weatherGrid {
   display: grid;
@@ -122,7 +119,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 
 .wMain {
   display: flex;
-  flex-direction: column !important; /* 💪 vynuceno */
+  flex-direction: column !important;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -148,6 +145,7 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 #small-weather{display:flex;gap:12px;align-items:center}
 #small-weather .w-icon{font-size:26px}
 #small-weather .w-main{font-size:16px;font-weight:600}
+
 
 /* ================== DEPARTURES ================== */
 .departures{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:auto}
