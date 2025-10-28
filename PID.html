@@ -88,9 +88,18 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 .weatherGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch}
 .wCard{background:rgba(255,255,255,0.03);border:var(--border);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
 .wIcon{font-size:30px}
-.wMain{display:flex;flex-direction:column;gap:4px}
-.wTemp{font-size:18px;font-weight:700}
-.wSub{font-size:13px;color:var(--muted)}
+.wMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.wWind {
+  font-size: 13px;
+  color: var(--muted);
+}
+
 #small-weather{display:flex;gap:12px;align-items:center}
 #small-weather .w-icon{font-size:26px}
 #small-weather .w-main{font-size:16px;font-weight:600}
@@ -296,35 +305,43 @@ body {
     </div>
 
     <!-- WEATHER -->
-    <div class="card" id="card-weather">
-      <div class="card-header">
-        <div class="icon"><i class="fa-solid fa-cloud-sun"></i></div>
-        <div><h3>Počasí</h3><div class="meta">Aktuální + 2 dny</div></div>
-      </div>
-      <div class="weatherGrid">
-        <div class="wCard">
-          <div class="wIcon" id="w0-icon">⛅</div>
-          <div class="wMain">
-            <div class="wTemp" id="w0-temp">—</div>
-            <div class="wSub" id="w0-sub">—</div>
-          </div>
-        </div>
-        <div class="wCard">
-          <div class="wIcon" id="w1-icon">⛅</div>
-          <div class="wMain">
-            <div class="wTemp" id="w1-temp">—</div>
-            <div class="wSub" id="w1-sub">Zítra</div>
-          </div>
-        </div>
-        <div class="wCard">
-          <div class="wIcon" id="w2-icon">⛅</div>
-          <div class="wMain">
-            <div class="wTemp" id="w2-temp">—</div>
-            <div class="wSub" id="w2-sub">Pozítří</div>
-          </div>
-        </div>
-      </div>
+    <div class="weatherGrid">
+
+  <div class="wCard">
+    <div class="wLabel">Dnes</div>
+    <div class="wIcon" id="w0-icon">⛅</div>
+    <div class="wMain">
+      <div class="wTemp" id="w0-avg">—</div>
+      <div class="wSub" id="w0-range">Max: — °C • Min: — °C</div>
+      <div class="wSub" id="w0-desc">Načítám...</div>
+      <div class="wWind" id="w0-wind">Vítr: — km/h</div>
     </div>
+  </div>
+
+  <div class="wCard">
+    <div class="wLabel">Zítra</div>
+    <div class="wIcon" id="w1-icon">⛅</div>
+    <div class="wMain">
+      <div class="wTemp" id="w1-avg">—</div>
+      <div class="wSub" id="w1-range">Max: — °C • Min: — °C</div>
+      <div class="wSub" id="w1-desc">Načítám...</div>
+      <div class="wWind" id="w1-wind">Vítr: — km/h</div>
+    </div>
+  </div>
+
+  <div class="wCard">
+    <div class="wLabel">Pozítří</div>
+    <div class="wIcon" id="w2-icon">⛅</div>
+    <div class="wMain">
+      <div class="wTemp" id="w2-avg">—</div>
+      <div class="wSub" id="w2-range">Max: — °C • Min: — °C</div>
+      <div class="wSub" id="w2-desc">Načítám...</div>
+      <div class="wWind" id="w2-wind">Vítr: — km/h</div>
+    </div>
+  </div>
+
+</div>
+
 
     <!-- DEPARTURES (Trains + Buses in one card) -->
     <div class="card" id="card-deps">
@@ -564,32 +581,54 @@ function weatherText(code){
   const map={0:'Jasno',1:'Polojasno',2:'Oblačno',3:'Zataženo',45:'Mlha',48:'Mrznoucí mlha',51:'Slabé mrholení',53:'Mrholení',55:'Silné mrholení',61:'Slabý déšť',63:'Déšť',65:'Silný déšť',71:'Sníh',73:'Sněžení',75:'Silné sněžení',80:'Přeháňky',81:'Přeháňky',82:'Silné přeháňky',95:'Bouřka',96:'Bouřka s kroupami',99:'Silná bouřka s kroupami'};
   return map[code]||'Počasí';
 }
-async function fetchWeather(){
-  try{
-    const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FPrague");
+ async function fetchWeather() {
+  try {
+    const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&timezone=Europe%2FPrague");
     const data = await res.json();
     const cur = data.current_weather;
-    const w0i = textWeatherIcon(cur.weathercode);
-    $('#w0-icon').textContent = w0i;
-    $('#w0-temp').textContent = `${cur.temperature.toFixed(1)} °C — ${weatherText(cur.weathercode)}`;
-    $('#w0-sub').textContent = `Vítr: ${cur.windspeed} km/h • Směr: ${cur.winddirection}°`;
-    $('#small-weather .w-icon').textContent = w0i;
+
+    // === DNES ===
+    const tMax0 = data.daily.temperature_2m_max[0];
+    const tMin0 = data.daily.temperature_2m_min[0];
+    const avg0 = ((tMax0 + tMin0) / 2).toFixed(1);
+    $('#w0-icon').textContent = textWeatherIcon(cur.weathercode);
+    $('#w0-avg').textContent = `${avg0} °C`;
+    $('#w0-range').textContent = `Max: ${tMax0.toFixed(1)} °C • Min: ${tMin0.toFixed(1)} °C`;
+    $('#w0-desc').textContent = weatherText(cur.weathercode);
+    $('#w0-wind').textContent = `Vítr: ${cur.windspeed.toFixed(1)} km/h • ${cur.winddirection}°`;
+
+    // === ZÍTRA ===
+    const tMax1 = data.daily.temperature_2m_max[1];
+    const tMin1 = data.daily.temperature_2m_min[1];
+    const avg1 = ((tMax1 + tMin1) / 2).toFixed(1);
+    $('#w1-icon').textContent = textWeatherIcon(data.daily.weathercode[1]);
+    $('#w1-avg').textContent = `${avg1} °C`;
+    $('#w1-range').textContent = `Max: ${tMax1.toFixed(1)} °C • Min: ${tMin1.toFixed(1)} °C`;
+    $('#w1-desc').textContent = weatherText(data.daily.weathercode[1]);
+    $('#w1-wind').textContent = `Vítr: ${data.daily.windspeed_10m_max[1].toFixed(1)} km/h • ${data.daily.winddirection_10m_dominant[1]}°`;
+
+    // === POZÍTŘÍ ===
+    const tMax2 = data.daily.temperature_2m_max[2];
+    const tMin2 = data.daily.temperature_2m_min[2];
+    const avg2 = ((tMax2 + tMin2) / 2).toFixed(1);
+    $('#w2-icon').textContent = textWeatherIcon(data.daily.weathercode[2]);
+    $('#w2-avg').textContent = `${avg2} °C`;
+    $('#w2-range').textContent = `Max: ${tMax2.toFixed(1)} °C • Min: ${tMin2.toFixed(1)} °C`;
+    $('#w2-desc').textContent = weatherText(data.daily.weathercode[2]);
+    $('#w2-wind').textContent = `Vítr: ${data.daily.windspeed_10m_max[2].toFixed(1)} km/h • ${data.daily.winddirection_10m_dominant[2]}°`;
+
+    // zkratka nahoře v hodinách
+    $('#small-weather .w-icon').textContent = textWeatherIcon(cur.weathercode);
     $('#small-weather .w-main').textContent = `${cur.temperature.toFixed(1)} °C`;
 
-    const dIdx = 1, d2Idx = 2;
-    const dMax = data.daily.temperature_2m_max, dMin = data.daily.temperature_2m_min, dCode = data.daily.weathercode;
-    const icon1 = textWeatherIcon(dCode[dIdx]), icon2 = textWeatherIcon(dCode[d2Idx]);
-    $('#w1-icon').textContent = icon1;
-    $('#w1-temp').textContent = `${Math.round(dMin[dIdx])}…${Math.round(dMax[dIdx])} °C — ${weatherText(dCode[dIdx])}`;
-    $('#w1-sub').textContent = `Zítra`;
-
-    $('#w2-icon').textContent = icon2;
-    $('#w2-temp').textContent = `${Math.round(dMin[d2Idx])}…${Math.round(dMax[d2Idx])} °C — ${weatherText(dCode[d2Idx])}`;
-    $('#w2-sub').textContent = `Pozítří`;
-  }catch(err){
-    $('#w0-temp').textContent = 'Počasí nenahráno';
-    $('#w1-temp').textContent = '—';
-    $('#w2-temp').textContent = '—';
+  } catch (err) {
+    console.error(err);
+    ['0','1','2'].forEach(i=>{
+      $(`#w${i}-avg`).textContent = '—';
+      $(`#w${i}-range`).textContent = 'Načtení selhalo';
+      $(`#w${i}-desc`).textContent = '—';
+      $(`#w${i}-wind`).textContent = '—';
+    });
   }
 }
 
