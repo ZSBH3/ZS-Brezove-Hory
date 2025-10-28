@@ -78,15 +78,16 @@ body{
   gap:var(--gap);
 }
 
-/* === Fixní velikost odpovídající 90% zoomu === */
-html, body {
-  zoom: 0.9;               /* Chrome, Edge, Opera */
-  -moz-transform: scale(0.9);  /* Firefox */
-  -moz-transform-origin: top center;
-  -o-transform: scale(0.9);    /* starší Opera */
-  -o-transform-origin: top center;
+/* === Automatické přizpůsobení tak, aby vypadalo jako při 90 % zoomu === */
+@media screen and (min-width: 1000px) {
+  html, body {
+    zoom: 0.9;                        /* Chrome, Edge, Opera, TV */
+    -moz-transform: scale(0.9);       /* Firefox */
+    -moz-transform-origin: top center;
+    -o-transform: scale(0.9);         /* starší Opera, TV */
+    -o-transform-origin: top center;
+  }
 }
-
 
 /* ================== TOP BAR ================== */
 .topbar{
