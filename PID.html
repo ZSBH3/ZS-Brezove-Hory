@@ -88,27 +88,61 @@ body{display:flex;align-items:center;justify-content:center;padding:18px}
 .weatherGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch}
 .wCard{background:rgba(255,255,255,0.03);border:var(--border);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
 .wIcon{font-size:30px}
-.wMain {
+/* ================== WEATHER ================== */
+.weatherGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.wCard {
+  background: rgba(255,255,255,0.03);
+  border: var(--border);
+  border-radius: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   text-align: center;
-  gap: 3px;
-  font-size: 14px;
-  line-height: 1.4;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+.wLabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffdcbc;
+  margin-bottom: 6px;
+}
+
+.wIcon {
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
+.wMain {
+  display: flex;
+  flex-direction: column !important; /* 💪 vynuceno */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  gap: 4px;
 }
 
 .wTemp {
   font-size: 18px;
   font-weight: 700;
   color: #ffdcbc;
-  margin-bottom: 2px;
 }
 
 .wSub, .wWind {
+  display: block;
   font-size: 13px;
   color: var(--muted);
-  line-height: 1.4;
+  line-height: 1.5;
+  width: 100%;
+  text-align: center;
 }
 
 #small-weather{display:flex;gap:12px;align-items:center}
