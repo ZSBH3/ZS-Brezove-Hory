@@ -78,6 +78,16 @@ body{
   gap:var(--gap);
 }
 
+/* === Fixní velikost odpovídající 90% zoomu === */
+html, body {
+  zoom: 0.9;               /* Chrome, Edge, Opera */
+  -moz-transform: scale(0.9);  /* Firefox */
+  -moz-transform-origin: top center;
+  -o-transform: scale(0.9);    /* starší Opera */
+  -o-transform-origin: top center;
+}
+
+
 /* ================== TOP BAR ================== */
 .topbar{
   display:flex; align-items:center; justify-content:space-between; gap:16px;
