@@ -12,43 +12,45 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-/* === Univerzální přizpůsobení pro TV, PC i mobily === */
-@media screen and (min-width: 1800px) {
-  .canvas {
-    max-width: 2400px;
-    transform: scale(1.15);
-    transform-origin: top center;
-  }
-  .card, .wCard {
-    font-size: 1.05em;
-  }
+/* === UNIVERZÁLNÍ VZHLED – STÁLE 3 SLOUPCE, STEJNÝ JAKO NA PC === */
+.canvas {
+  width: 100%;
+  max-width: 2100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--gap);
+  transform-origin: top center;
 }
 
-@media screen and (max-width: 1600px) {
-  .grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+/* 💻 PC, notebooky, TV – stejné rozložení, jen mění měřítko podle rozlišení */
+@media screen and (min-width: 2400px) {
+  .canvas { transform: scale(1.25); }
+}
+@media screen and (max-width: 2000px) and (min-width: 1600px) {
+  .canvas { transform: scale(1.1); }
+}
+@media screen and (max-width: 1599px) and (min-width: 1300px) {
+  .canvas { transform: scale(1.0); }
+}
+@media screen and (max-width: 1299px) and (min-width: 1100px) {
+  .canvas { transform: scale(0.9); }
+}
+@media screen and (max-width: 1099px) and (min-width: 900px) {
+  .canvas { transform: scale(0.8); }
+}
+@media screen and (max-width: 899px) {
+  .canvas { transform: scale(0.7); }
 }
 
-@media screen and (max-width: 1200px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
+/* 📱 Na mobilech povolíme horizontální posun, aby zůstal 3-sloupcový layout */
 @media screen and (max-width: 800px) {
-  .grid {
-    grid-template-columns: 1fr;
+  body {
+    overflow-x: auto;
   }
-  .topbar {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-  .logo {
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
+  .canvas {
+    min-width: 1200px;
+    transform: scale(0.8);
   }
 }
 
