@@ -78,16 +78,27 @@ body{
   gap:var(--gap);
 }
 
-/* === Automatické přizpůsobení tak, aby vypadalo jako při 90 % zoomu === */
-@media screen and (min-width: 1000px) {
-  html, body {
-    zoom: 0.9;                        /* Chrome, Edge, Opera, TV */
-    -moz-transform: scale(0.9);       /* Firefox */
-    -moz-transform-origin: top center;
-    -o-transform: scale(0.9);         /* starší Opera, TV */
-    -o-transform-origin: top center;
-  }
+/* === Správné měřítko pro všechny obrazovky (TV, PC, mobily) === */
+.canvas {
+  transform-origin: top center;
 }
+
+@media screen and (min-width: 2200px) {
+  .canvas { transform: scale(1.25); }
+}
+@media screen and (max-width: 2199px) and (min-width: 1600px) {
+  .canvas { transform: scale(1.1); }
+}
+@media screen and (max-width: 1599px) and (min-width: 1200px) {
+  .canvas { transform: scale(1.0); }
+}
+@media screen and (max-width: 1199px) and (min-width: 900px) {
+  .canvas { transform: scale(0.85); }
+}
+@media screen and (max-width: 899px) {
+  .canvas { transform: scale(0.75); min-width: 1200px; overflow-x: auto; }
+}
+
 
 /* ================== TOP BAR ================== */
 .topbar{
