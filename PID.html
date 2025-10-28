@@ -610,12 +610,19 @@ function updateNameday(){
 /* ================== POČASÍ (Open-Meteo) ================== */
 async function fetchWeather() {
   try {
-    const url = "https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,winddirection_10m_dominant&timezone=Europe%2FPrague";
+    const url =
+      "https://api.open-meteo.com/v1/forecast" +
+      "?latitude=49.69&longitude=14.01" +
+      "&current_weather=true" +
+      "&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,winddirection_10m_dominant" +
+      "&forecast_days=3" +
+      "&timezone=Europe%2FPrague";
+
     const res = await fetch(url);
     const data = await res.json();
-    console.log("Počasí DATA:", data);
+    console.log("✅ Počasí DATA:", data);
 
-    if (!data || !data.current_weather) {
+    if (!data || !data.current_weather || !data.daily) {
       throw new Error("Data se nenačetla z API");
     }
 
@@ -624,46 +631,73 @@ async function fetchWeather() {
 
     // === DNES ===
     const avg0 = ((w.temperature_2m_max[0] + w.temperature_2m_min[0]) / 2).toFixed(1);
-    $('#w0-icon').textContent = textWeatherIcon(cur.weathercode);
-    $('#w0-avg').textContent = `${avg0} °C`;
-    $('#w0-max').textContent = `Max: ${w.temperature_2m_max[0].toFixed(1)} °C`;
-    $('#w0-min').textContent = `Min: ${w.temperature_2m_min[0].toFixed(1)} °C`;
-    $('#w0-desc').textContent = weatherText(cur.weathercode);
-    $('#w0-wind').textContent = `Vítr: ${cur.windspeed.toFixed(1)} km/h • ${cur.winddirection}°`;
+    $("#w0-icon").textContent = textWeatherIcon(cur.weathercode);
+    $("#w0-avg").textContent = `${avg0} °C`;
+    $("#w0-range").textContent = `Max: ${w.temperature_2m_max[0].toFixed(1)} °C • Min: ${w.temperature_2m_min[0].toFixed(1)} °C`;
+    $("#w0-desc").textContent = weatherText(cur.weathercode);
+    $("#w0-wind").textContent = `Vítr: ${cur.windspeed.toFixed(1)} km/h • ${cur.winddirection}°`;
 
     // === ZÍTRA ===
     const avg1 = ((w.temperature_2m_max[1] + w.temperature_2m_min[1]) / 2).toFixed(1);
-    $('#w1-icon').textContent = textWeatherIcon(w.weathercode[1]);
-    $('#w1-avg').textContent = `${avg1} °C`;
-    $('#w1-max').textContent = `Max: ${w.temperature_2m_max[1].toFixed(1)} °C`;
-    $('#w1-min').textContent = `Min: ${w.temperature_2m_min[1].toFixed(1)} °C`;
-    $('#w1-desc').textContent = weatherText(w.weathercode[1]);
-    $('#w1-wind').textContent = `Vítr: ${w.windspeed_10m_max[1].toFixed(1)} km/h • ${w.winddirection_10m_dominant[1]}°`;
+    $("#w1-icon").textContent = textWeatherIcon(w.weathercode[1]);
+    $("#w1-avg").textContent = `${avg1} °C`;
+    $("#w1-range").textContent = `Max: ${w.temperature_2m_max[1].toFixed(1)} °C • Min: ${w.temperature_2m_min[1].toFixed(1)} °C`;
+    $("#w1-desc").textContent = weatherText(w.weathercode[1]);
+    $("#w1-wind").textContent = `Vítr: ${w.windspeed_10m_max[1].toFixed(1)} km/h • ${w.winddirection_10m_dominant[1]}°`;
 
     // === POZÍTŘÍ ===
     const avg2 = ((w.temperature_2m_max[2] + w.temperature_2m_min[2]) / 2).toFixed(1);
-    $('#w2-icon').textContent = textWeatherIcon(w.weathercode[2]);
-    $('#w2-avg').textContent = `${avg2} °C`;
-    $('#w2-max').textContent = `Max: ${w.temperature_2m_max[2].toFixed(1)} °C`;
-    $('#w2-min').textContent = `Min: ${w.temperature_2m_min[2].toFixed(1)} °C`;
-    $('#w2-desc').textContent = weatherText(w.weathercode[2]);
-    $('#w2-wind').textContent = `Vítr: ${w.windspeed_10m_max[2].toFixed(1)} km/h • ${w.winddirection_10m_dominant[2]}°`;
+    $("#w2-icon").textContent = textWeatherIcon(w.weathercode[2]);
+    $("#w2-avg").textContent = `${avg2} °C`;
+    $("#w2-range").textContent = `Max: ${w.temperature_2m_max[2].toFixed(1)} °C • Min: ${w.temperature_2m_min[2].toFixed(1)} °C`;
+    $("#w2-desc").textContent = weatherText(w.weathercode[2]);
+    $("#w2-wind").textContent = `Vítr: ${w.windspeed_10m_max[2].toFixed(1)} km/h • ${w.winddirection_10m_dominant[2]}°`;
 
-    // mini ikona nahoře
-    $('#small-weather .w-icon').textContent = textWeatherIcon(cur.weathercode);
-    $('#small-weather .w-main').textContent = `${cur.temperature.toFixed(1)} °C`;
+    // Mini ikona nahoře
+    $("#small-weather .w-icon").textContent = textWeatherIcon(cur.weathercode);
+    $("#small-weather .w-main").textContent = `${cur.temperature.toFixed(1)} °C`;
 
+    // Aktualizace času načtení
+    const now = new Date();
+    console.log("🌤 Aktualizováno počasí:", now.toLocaleTimeString("cs-CZ"));
   } catch (err) {
     console.error("❌ Chyba počasí:", err);
-    ['0','1','2'].forEach(i=>{
-      $(`#w${i}-avg`).textContent = '—';
-      $(`#w${i}-max`).textContent = 'Chyba načtení';
-      $(`#w${i}-min`).textContent = '—';
-      $(`#w${i}-desc`).textContent = '—';
-      $(`#w${i}-wind`).textContent = '—';
+    ["0", "1", "2"].forEach(i => {
+      $(`#w${i}-avg`).textContent = "—";
+      $(`#w${i}-range`).textContent = "Chyba načtení";
+      $(`#w${i}-desc`).textContent = "—";
+      $(`#w${i}-wind`).textContent = "—";
     });
   }
 }
+
+/* ================== Pomocné funkce pro ikony a popisy počasí ================== */
+function textWeatherIcon(code) {
+  if ([0].includes(code)) return "☀️";
+  if ([1, 2].includes(code)) return "🌤️";
+  if ([3].includes(code)) return "☁️";
+  if ([45, 48].includes(code)) return "🌫️";
+  if ([51, 53, 55].includes(code)) return "🌦️";
+  if ([61, 63, 65].includes(code)) return "🌧️";
+  if ([71, 73, 75, 77].includes(code)) return "❄️";
+  if ([80, 81, 82].includes(code)) return "🌧️";
+  if ([95, 96, 99].includes(code)) return "⛈️";
+  return "❓";
+}
+
+function weatherText(code) {
+  if ([0].includes(code)) return "Jasno";
+  if ([1, 2].includes(code)) return "Polojasno";
+  if ([3].includes(code)) return "Zataženo";
+  if ([45, 48].includes(code)) return "Mlha";
+  if ([51, 53, 55].includes(code)) return "Mrholení";
+  if ([61, 63, 65].includes(code)) return "Déšť";
+  if ([71, 73, 75, 77].includes(code)) return "Sněžení";
+  if ([80, 81, 82].includes(code)) return "Přeháňky";
+  if ([95, 96, 99].includes(code)) return "Bouřka";
+  return "Neznámé počasí";
+}
+
 
 
 
