@@ -12,38 +12,44 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-/* ================== FALLBACKY PRO VŠECHNA ZAŘÍZENÍ ================== */
-body {
-  background-color:#08272d !important;
-  color:#fff !important;
-  font-family:Arial,Helvetica,sans-serif !important;
-}
-
-/* Pokud zařízení neumí grid → použij flex */
-@supports not (display:grid) {
-  .canvas, .grid {
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
+/* === Univerzální přizpůsobení pro TV, PC i mobily === */
+@media screen and (min-width: 1800px) {
+  .canvas {
+    max-width: 2400px;
+    transform: scale(1.15);
+    transform-origin: top center;
   }
   .card, .wCard {
-    width:95% !important;
-    margin:10px auto !important;
+    font-size: 1.05em;
   }
 }
 
-/* Televizní režim (nízké DPI / velká obrazovka) */
-@media screen and (min-width:1800px) {
-  html, body {font-size:22px !important;}
-  .card, .wCard {transform:scale(1.15); transform-origin:top center;}
+@media screen and (max-width: 1600px) {
+  .grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
-/* Extrémně malé displeje (mobily) */
-@media (max-width:600px) {
-  html, body {font-size:14px !important;}
-  .grid {grid-template-columns:1fr !important;}
-  .topbar, .tickerWrap {flex-direction:column !important;height:auto !important;}
+@media screen and (max-width: 1200px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .topbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  .logo {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
+  }
 }
 
 /* ================== THEME (zachováno) ================== */
@@ -343,7 +349,7 @@ body {
 
 </style>
 </head>
-<body style="min-height:100vh;overflow:auto;display:flex;flex-direction:column;align-items:center;">
+<body style="min-height:100vh;overflow:auto;display:block;">
 <div class="canvas">
 
   <!-- TOP BAR -->
