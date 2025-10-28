@@ -614,9 +614,14 @@ async function fetchWeather() {
   try {
     const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&timezone=Europe%2FPrague");
     const data = await res.json();
-    const cur = data.current_weather;
+    console.log("WEATHER DATA:", data); // pro kontrolu
 
-    // Dnes
+    const cur = data.current_weather;
+    if (!cur || !data.daily) {
+      throw new Error("Incomplete weather data");
+    }
+
+    // === DNES ===
     const tMax0 = data.daily.temperature_2m_max[0];
     const tMin0 = data.daily.temperature_2m_min[0];
     const avg0 = ((tMax0 + tMin0) / 2).toFixed(1);
@@ -627,7 +632,7 @@ async function fetchWeather() {
     $('#w0-desc').textContent = weatherText(cur.weathercode);
     $('#w0-wind').textContent = `Vítr: ${cur.windspeed.toFixed(1)} km/h • ${cur.winddirection}°`;
 
-    // Zítra
+    // === ZÍTRA ===
     const tMax1 = data.daily.temperature_2m_max[1];
     const tMin1 = data.daily.temperature_2m_min[1];
     const avg1 = ((tMax1 + tMin1) / 2).toFixed(1);
@@ -638,7 +643,7 @@ async function fetchWeather() {
     $('#w1-desc').textContent = weatherText(data.daily.weathercode[1]);
     $('#w1-wind').textContent = `Vítr: ${data.daily.windspeed_10m_max[1].toFixed(1)} km/h • ${data.daily.winddirection_10m_dominant[1]}°`;
 
-    // Pozítří
+    // === POZÍTŘÍ ===
     const tMax2 = data.daily.temperature_2m_max[2];
     const tMin2 = data.daily.temperature_2m_min[2];
     const avg2 = ((tMax2 + tMin2) / 2).toFixed(1);
@@ -649,12 +654,19 @@ async function fetchWeather() {
     $('#w2-desc').textContent = weatherText(data.daily.weathercode[2]);
     $('#w2-wind').textContent = `Vítr: ${data.daily.windspeed_10m_max[2].toFixed(1)} km/h • ${data.daily.winddirection_10m_dominant[2]}°`;
 
-    // Mini badge nahoře
+    // mini počasí nahoře
     $('#small-weather .w-icon').textContent = textWeatherIcon(cur.weathercode);
     $('#small-weather .w-main').textContent = `${cur.temperature.toFixed(1)} °C`;
 
   } catch (err) {
-    console.error(err);
+    console.error("CHYBA POČASÍ:", err);
+    ['0','1','2'].forEach(i=>{
+      $(`#w${i}-avg`).textContent = '—';
+      $(`#w${i}-max`).textContent = 'Načtení selhalo';
+      $(`#w${i}-min`).textContent = '—';
+      $(`#w${i}-desc`).textContent = '—';
+      $(`#w${i}-wind`).textContent = '—';
+    });
   }
 }
 
