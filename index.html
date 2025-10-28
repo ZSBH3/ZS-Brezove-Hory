@@ -4,7 +4,6 @@
 <link rel="icon" href="https://zsbrezovehory.cz/wp-content/uploads/2020/07/logo-barevn%C3%A9-zs-brezove-hory.png" type="image/png">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="color-scheme" content="dark light">
 <title>Informační tabule — ZŠ Březové Hory</title>
 
 <!-- Fonts & Icons -->
@@ -12,48 +11,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-/* === UNIVERZÁLNÍ VZHLED – STÁLE 3 SLOUPCE, STEJNÝ JAKO NA PC === */
-.canvas {
-  width: 100%;
-  max-width: 2100px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: var(--gap);
-  transform-origin: top center;
-}
-
-/* 💻 PC, notebooky, TV – stejné rozložení, jen mění měřítko podle rozlišení */
-@media screen and (min-width: 2400px) {
-  .canvas { transform: scale(1.25); }
-}
-@media screen and (max-width: 2000px) and (min-width: 1600px) {
-  .canvas { transform: scale(1.1); }
-}
-@media screen and (max-width: 1599px) and (min-width: 1300px) {
-  .canvas { transform: scale(1.0); }
-}
-@media screen and (max-width: 1299px) and (min-width: 1100px) {
-  .canvas { transform: scale(0.9); }
-}
-@media screen and (max-width: 1099px) and (min-width: 900px) {
-  .canvas { transform: scale(0.8); }
-}
-@media screen and (max-width: 899px) {
-  .canvas { transform: scale(0.7); }
-}
-
-/* 📱 Na mobilech povolíme horizontální posun, aby zůstal 3-sloupcový layout */
-@media screen and (max-width: 800px) {
-  body {
-    overflow-x: auto;
-  }
-  .canvas {
-    min-width: 1200px;
-    transform: scale(0.8);
-  }
-}
-
 /* ================== THEME (zachováno) ================== */
 :root{
   --bg1:#08272d; --bg2:#0e3b46; --accent:#ff8a3d;
@@ -63,11 +20,12 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:#eaf2f5;font-family:'Poppins',sans-serif}
 body{
+  display:block;
+  min-height:100vh;
+  width:100%;
   margin:0;
   padding:18px;
-  background:linear-gradient(135deg,var(--bg1),var(--bg2));
-  color:#eaf2f5;
-  font-family:'Poppins',sans-serif;
+  overflow:auto;
 }
 
 /* ================== CANVAS ================== */
@@ -77,28 +35,6 @@ body{
   grid-template-rows: auto 1fr auto;
   gap:var(--gap);
 }
-
-/* === Správné měřítko pro všechny obrazovky (TV, PC, mobily) === */
-.canvas {
-  transform-origin: top center;
-}
-
-@media screen and (min-width: 2200px) {
-  .canvas { transform: scale(1.25); }
-}
-@media screen and (max-width: 2199px) and (min-width: 1600px) {
-  .canvas { transform: scale(1.1); }
-}
-@media screen and (max-width: 1599px) and (min-width: 1200px) {
-  .canvas { transform: scale(1.0); }
-}
-@media screen and (max-width: 1199px) and (min-width: 900px) {
-  .canvas { transform: scale(0.85); }
-}
-@media screen and (max-width: 899px) {
-  .canvas { transform: scale(0.75); min-width: 1200px; overflow-x: auto; }
-}
-
 
 /* ================== TOP BAR ================== */
 .topbar{
@@ -362,18 +298,9 @@ body {
 
 /* utility hidden */
 .hidden{display:none!important}
-
-/* Fallback barevné pozadí – pro TV co neumí gradient */
-@media (forced-colors: active), (prefers-color-scheme: light) {
-  html,body {
-    background:#08272d !important;
-    color:#fff !important;
-  }
-}
-
 </style>
 </head>
-<body style="min-height:100vh;overflow:auto;display:block;">
+<body>
 <div class="canvas">
 
   <!-- TOP BAR -->
