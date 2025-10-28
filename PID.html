@@ -610,16 +610,40 @@ function updateNameday(){
 }
 
 /* ================== POČASÍ (Open-Meteo) ================== */
+<script>
+// ================== Pomocné funkce ==================
+const $ = (sel) => document.querySelector(sel);
+function pad2(n){return n<10?'0'+n:n;}
+function textWeatherIcon(code){
+  if(code===0) return "☀️";
+  if(code===1||code===2) return "⛅";
+  if(code===3) return "☁️";
+  if(code===45||code===48) return "🌫️";
+  if(code>=51&&code<=67) return "🌧️";
+  if(code>=71&&code<=77) return "❄️";
+  if(code>=80&&code<=82) return "🌦️";
+  if(code>=95||code===96||code===99) return "⛈️";
+  return "⛅";
+}
+function weatherText(code){
+  const map={
+    0:'Jasno',1:'Polojasno',2:'Oblačno',3:'Zataženo',
+    45:'Mlha',48:'Mrznoucí mlha',51:'Slabé mrholení',53:'Mrholení',55:'Silné mrholení',
+    61:'Slabý déšť',63:'Déšť',65:'Silný déšť',71:'Sněžení',73:'Sněžení',75:'Silné sněžení',
+    80:'Přeháňky',81:'Přeháňky',82:'Silné přeháňky',95:'Bouřka',96:'Bouřka s kroupami',99:'Silná bouřka s kroupami'
+  };
+  return map[code]||'—';
+}
+
+// ================== Počasí ==================
 async function fetchWeather() {
   try {
     const url = "https://api.open-meteo.com/v1/forecast?latitude=49.69&longitude=14.01&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,winddirection_10m_dominant&timezone=Europe%2FPrague";
     const res = await fetch(url);
     const data = await res.json();
-    console.log("Počasí DATA:", data);
+    console.log("🌦️ Počasí DATA:", data);
 
-    if (!data || !data.current_weather) {
-      throw new Error("Data se nenačetla z API");
-    }
+    if (!data || !data.current_weather) throw new Error("Data se nenačetla z API");
 
     const cur = data.current_weather;
     const w = data.daily;
@@ -666,6 +690,20 @@ async function fetchWeather() {
     });
   }
 }
+
+// ================== Aktualizace všech dat ==================
+function refreshAll(){
+  fetchWeather();
+  console.log("🔄 Obnoveno:", new Date().toLocaleTimeString('cs-CZ'));
+}
+
+// ================== Automatická aktualizace ==================
+refreshAll(); // první načtení hned po otevření
+setInterval(refreshAll, 10 * 60 * 1000); // každých 10 minut
+
+</script>
+</body>
+</html>
 
 
 
