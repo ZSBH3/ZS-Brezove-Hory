@@ -179,7 +179,7 @@ body{
 .newsContainer{
   display:flex;
   flex-direction:column;
-  gap:30px;                     /* mezery mezi jednotlivými aktualitami */
+  gap:35px;                     /* mezery mezi jednotlivými aktualitami */
 }
 
 .newsWrap{
@@ -752,10 +752,10 @@ function fetchMenu(){
     const d = menu[day];
     if(d){
       html += `
-        <div class='meal'><strong>Polévka:</strong> ${d.polevka}</div>
-        <div class='meal'><strong>Oběd:</strong> ${d.obed}</div>
-        <div class='meal'><strong>Nápoj:</strong> ${d.napoj}</div>
-        <div class='meal'><strong>Dezert:</strong> ${d.dezert}</div>
+        <div class='meal'><strong>Polévka 🍲:</strong> ${d.polevka}</div>
+        <div class='meal'><strong>Oběd 🥘:</strong> ${d.obed}</div>
+        <div class='meal'><strong>Nápoj 🥛:</strong> ${d.napoj}</div>
+        <div class='meal'><strong>Dezert 🍮:</strong> ${d.dezert}</div>
       `;
     } else {
       html += "<div class='meal'><em>Pro dnešek není jídelníček zadán.</em></div>";
