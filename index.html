@@ -195,13 +195,14 @@ body{
 }
 
 .newsThumb{
-  width:172.5px;                  /* o něco větší obrázek */
+  width:172.5px;
   height:130px;
   border-radius:10px;
   background:#072a2d;
-  background-size:cover;
+  background-size:contain;               /* ✅ nezkreslí se */
   background-position:center;
   flex-shrink:0;
+  image-rendering:-webkit-optimize-contrast; /* ✅ ostřejší vykreslení */
 }
 
 .newsTxt{
