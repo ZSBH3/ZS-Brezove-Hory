@@ -703,57 +703,21 @@ function weatherText(code) {
 
 /* ================== JÍDELNÍČEK ================== */
 /* ================== JÍDELNÍČEK – OFFLINE NA CELÝ TÝDEN ================== */
-function fetchMenu(){
-  const menu = {
-    1: { // Pondělí
-      polevka: " ",
-      obed: " ",
-      napoj: " ",
-      dezert: " "
-    },
-    2: { // Úterý
-      polevka: " ",
-      obed: " ",
-      napoj: " ",
-      dezert: " "
-    },
-    3: { // Středa
-      polevka: " ",
-      obed: " ",
-      napoj: " ",
-      dezert: " "
-    },
-    4: { // Čtvrtek
-      polevka: "Hovězí polévka s játrovou rýží (01,03,09)",
-      obed: "Dukátové buchtičky s krémem (01,03,07)",
-      napoj: "Mléko , Voda se sirupem (07)",
-      dezert: "Dezert"
-    },
-    5: { // Pátek
-      polevka: "Čarodějnický dýňový lektvar - Krémová dýňová polévka s kouzelným kořením – zahřeje i ty nejzmrzlejší",
-      obed: "Netopýří hnízdo s celerovými červíky - Černá rýže s kuřecími nudličkami na celeru – chutná tak dobře",
-      napoj: "Dýňový smíšek - Oranžový muffin z čarodějné trouby – sladká odměna pro každé odvážné strašidýlko",
-      dezert: "Upíří krev - Bublinkový nápoj temné noci – elixír, který dodá sílu na další kouzla"
-    }
-  };
+async function fetchMenu(){
+  const res = await fetch("http://localhost:3000/menu");
+  const data = await res.json();
 
-  const day = new Date().getDay(); // 1=Po ... 5=Pá, 0/6=víkend
   let html = "<h4>Dnešní oběd</h4>";
 
-  if(day === 0 || day === 6 ){
-    html += "<div class='meal'><em>Dnes není výdej jídel (víkend)</em></div>";
+  if(data.error){
+    html += "<div class='meal'>Chyba načítání</div>";
   } else {
-    const d = menu[day];
-    if(d){
-      html += `
-        <div class='meal'><strong>Polévka:</strong> ${d.polevka}</div>
-        <div class='meal'><strong>Oběd:</strong> ${d.obed}</div>
-        <div class='meal'><strong>Nápoj:</strong> ${d.napoj}</div>
-        <div class='meal'><strong>Dezert:</strong> ${d.dezert}</div>
-      `;
-    } else {
-      html += "<div class='meal'><em>Pro dnešek není jídelníček zadán.</em></div>";
-    }
+    html += `
+      <div class='meal'><strong>Polévka 🍲:</strong> ${data.polevka || "—"}</div>
+      <div class='meal'><strong>Oběd 🥘:</strong> ${(data.obed||[]).join("<br>")}</div>
+      <div class='meal'><strong>Nápoj 🥛:</strong> ${data.napoj || "—"}</div>
+      <div class='meal'><strong>Dezert 🍮:</strong> ${data.dezert || "—"}</div>
+    `;
   }
 
   document.getElementById("obed").innerHTML = html;
