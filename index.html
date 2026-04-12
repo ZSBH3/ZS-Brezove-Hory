@@ -552,6 +552,42 @@ const DAY_PLAN = (()=> {
   // 8. hod 14:35-15:20
   addBlock("8. hodina",14,35,45,false);
   return items;
+// ===== DRUHÁ ČÁRA (např. celý blok hodiny + přestávky) =====
+  const DAY_PLAN = (()=> {
+  const items = [];
+  function addBlock(title,startH,startM,durMin,isBreak){
+    const start = {h:startH,m:startM};
+    const endMin = startH*60+startM+durMin;
+    const end = {h:Math.floor(endMin/60), m:endMin%60};
+    items.push({title, start, end, isBreak, durMin});
+  }
+  // 0. hod 7:00-7:45
+  addBlock("0. hodina",7,0,45,false);
+  addBlock("Malá přestávka",7,45,15,true);
+  // 1. hod 8:00-8:45
+  addBlock("1. hodina",8,0,45,false);
+  addBlock("Malá přestávka",8,45,10,true);
+  // 2. hod 8:55-9:40
+  addBlock("2. hodina",8,55,45,false);
+  addBlock("Velká přestávka",9,40,20,true);
+  // 3. hod 10:00-10:45
+  addBlock("3. hodina",10,0,45,false);
+  addBlock("Malá přestávka",10,45,10,true);
+  // 4. hod 10:55-11:40
+  addBlock("4. hodina",10,55,45,false);
+  addBlock("Malá přestávka",11,40,10,true);
+  // 5. hod 11:50-12:35
+  addBlock("5. hodina",11,50,45,false);
+  addBlock("Malá přestávka",12,35,10,true);
+  // 6. hod 12:45-13:30
+  addBlock("6. hodina",12,45,45,false);
+  addBlock("Malá přestávka",13,30,10,true);
+  // 7. hod 13:40-14:25
+  addBlock("7. hodina",13,40,45,false);
+  addBlock("Malá přestávka",14,25,10,true);
+  // 8. hod 14:35-15:20
+  addBlock("8. hodina",14,35,45,false);
+  return items;
 })();
 
 function updateClock(){
