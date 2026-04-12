@@ -632,6 +632,9 @@ if(block){
   $('#progress-end').textContent = endt;
   $('#progress-bar').style.width = pct.toFixed(1)+'%';
   $('#lesson-state').textContent = state;
+  $('#progress-bar-2').style.width = pct2.toFixed(1) + '%';
+  $('#progress2-left2').textContent = left2;
+  $('#progress2-end2').textContent = end2;
 }
 setInterval(updateLesson,1000); updateLesson();
 
