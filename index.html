@@ -963,15 +963,15 @@ function setMetaAndTicker(){
   $('#ticker-time').textContent = new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
   setMetaStatus();
 }
-async function refreshAll(){
-  updateClock();
-  updateLesson();
-  fetchWeather();
-  fetchMenu();
-  updateNameday();   // <<< svátky z offline seznamu
-  renderTrains();
-  renderBuses();
-  setMetaAndTicker();
+function refreshAll(){
+  try{ updateClock(); }catch(e){console.error(e)}
+  try{ updateLesson(); }catch(e){console.error(e)}
+  try{ fetchWeather(); }catch(e){console.error(e)}
+  try{ fetchMenu(); }catch(e){console.error(e)}
+  try{ updateNameday(); }catch(e){console.error(e)}
+  try{ renderTrains(); }catch(e){console.error(e)}
+  try{ renderBuses(); }catch(e){console.error(e)}
+  try{ setMetaAndTicker(); }catch(e){console.error(e)}
 }
 refreshAll();
 setInterval(refreshAll, REFRESH_MIN*60*1000);
