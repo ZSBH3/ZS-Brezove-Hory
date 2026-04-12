@@ -88,6 +88,7 @@ body{
 .progressRow{display:flex;align-items:center;gap:12px}
 .progressShell{flex:1;height:14px;border-radius:999px;background:rgba(255,255,255,0.06);position:relative;overflow:hidden}
 .progressBar{position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg,#ff8a3d,#ffc08a);border-radius:999px}
+.progressBar2{position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg,#ff8a3d,#ffc08a);border-radius:999px}
 .progressInfo{display:flex;gap:16px;font-family:'Roboto Condensed',sans-serif}
 .progressInfo div{font-size:20px;color:#ffdcbc}
 
@@ -348,6 +349,15 @@ body {
                 <div id="progress-end">Konec: —</div>
               </div>
             </div>
+            <div class="progressRow">
+           <div class="progressShell">
+         <div class="progressBar2" id="progress-bar-2"></div>
+      </div>
+     <div class="progressInfo">
+    <div id="progress2-left2">Zbývá: —</div>
+   <div id="progress2-end2">Konec: —</div>
+  </div>
+</div>
           </div>
           <div class="badge" id="lesson-state">—</div>
         </div>
@@ -541,9 +551,6 @@ const DAY_PLAN = (()=> {
   addBlock("Malá přestávka",14,25,10,true);
   // 8. hod 14:35-15:20
   addBlock("8. hodina",14,35,45,false);
-  addBlock("Malá přestávka",15,20,10,true);
-  // 9. hod 15:30-16:15
-  addBlock("9. hodina",15,30,45,false);
   return items;
 })();
 
@@ -582,6 +589,8 @@ function updateLesson(){
     left = "Zbývá: —";
     endt = "Konec: —";
     pct = 0; state = "VOLNO";
+    left2 = "Zbývá: —";
+    end2 = "Konec: —";
   }
   $('#lesson-title').textContent = title;
   $('#lesson-sub').textContent = sub;
