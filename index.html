@@ -603,6 +603,20 @@ function updateLesson(){
     left = `Zbývá: ${secondsToMinSec(Math.floor(remain))}`;
     endt = `Konec: ${pad2(current.end.h)}:${pad2(current.end.m)}`;
     state = current.isBreak ? 'PŘESTÁVKA' : 'HODINA';
+    let pct2 = 0;
+    // ===== DRUHÁ ČÁRA =====//
+let left2 = "Zbývá: —";
+let end2 = "Konec: —";
+
+if(block){
+  const elapsed = (nowMin*60 + now.getSeconds()) - (block.startMin*60);
+  const total = (block.endMin - block.startMin)*60;
+  const remain = Math.max(0, total - elapsed);
+
+  pct2 = Math.min(100, (elapsed/total)*100);
+  left2 = `Zbývá: ${secondsToMinSec(Math.floor(remain))}`;
+  end2 = `Konec: ${pad2(Math.floor(block.endMin/60))}:${pad2(block.endMin%60)}`;
+}
   } else {
     title = "Konec vyučování";
     sub = "—";
